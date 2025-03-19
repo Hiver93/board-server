@@ -1,0 +1,8 @@
+package com.example.demo.error;
+
+import org.springframework.http.HttpStatus;
+
+public enum ErrorCode {
+	POST_NOT_FOUND(HttpStatus.NOT_FOUND, "post not found"),
+	INCORRECT_PASSWORD(HttpStatus.UNAUTHORIZED, "incorrect password")
+}

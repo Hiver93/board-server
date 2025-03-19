@@ -1,0 +1,22 @@
+package com.example.demo;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.example.demo.repository.PostMapper;
+import com.example.demo.repository.UserMapper;
+
+@SpringBootTest
+public class MapperTest {
+
+	@Autowired
+	private PostMapper postMapper;
+	
+	@Autowired
+	private UserMapper userMapper;
+	
+	@Test
+	public void test() {
+		
+	}
+}

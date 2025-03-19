@@ -1,0 +1,21 @@
+package com.example.demo;
+
+import java.util.Date;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+
+public class JwtUtil {
+
+	final String KEY = "abcd";
+	public String build() {
+		Date cur = new Date();
+		Date exp = new Date(cur.getTime() + 6000 * 60 * 60);
+		return Jwts.builder()
+				.claim("id", 1)
+				.issuedAt(cur)
+				.expiration(exp)
+				.signWith(SignatureAlgorithm.HS256, KEY)
+				.compact();
+	}
+}

@@ -1,0 +1,7 @@
+package com.example.demo.error;
+
+import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
+
+public class AsyncException extends SimpleAsyncUncaughtExceptionHandler{
+
+}

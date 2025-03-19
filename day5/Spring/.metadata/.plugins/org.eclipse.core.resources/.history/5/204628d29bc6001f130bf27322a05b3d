@@ -1,0 +1,15 @@
+package com.example.board.repository;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import com.example.board.domain.Post;
+
+public class PostRepository {
+	private Map<Long,Post> postMap = new HashMap<>();
+	private long lastId = 0;
+	
+	private void save(Post post) {
+		
+	}
+}

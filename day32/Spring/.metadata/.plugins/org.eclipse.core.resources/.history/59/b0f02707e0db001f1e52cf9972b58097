@@ -1,0 +1,105 @@
+package com.example.demo.dto;
+
+import org.springframework.validation.annotation.Validated;
+
+import com.example.demo.entity.Post;
+
+import jakarta.validation.constraints.NotBlank;
+
+public class PostReqDto {
+
+	@Validated
+	public static class Create{
+		@NotBlank(message = "title")
+		private String title;
+		@NotBlank(message = "content")
+		private String content;
+		@NotBlank(message = "password")
+		private String password;
+		public Create() {
+			super();
+		}
+		public String getTitle() {
+			return title;
+		}
+		public void setTitle(String title) {
+			this.title = title;
+		}
+		public String getContent() {
+			return content;
+		}
+		public void setContent(String content) {
+			this.content = content;
+		}
+		public String getPassword() {
+			return password;
+		}
+		public void setPassword(String password) {
+			this.password = password;
+		}
+		public Post to() {
+			Post post = new Post();
+			post.setTitle(title);
+			post.setContent(content);
+			post.setPassword(password);
+			return post;
+		}
+	}
+	
+	public static class Delete{
+		private String password;
+
+		public Delete() {
+			super();
+		}
+
+		public String getPassword() {
+			return password;
+		}
+
+		public void setPassword(String password) {
+			this.password = password;
+		}
+		public Post to(Integer postId) {
+			Post post = new Post();
+			post.setId(postId);
+			post.setPassword(password);
+			return post;
+		}
+	}
+	
+	public static class Update{
+		private String title;
+		private String content;
+		private String password;
+		public Update() {
+			super();
+		}
+		public String getTitle() {
+			return title;
+		}
+		public void setTitle(String title) {
+			this.title = title;
+		}
+		public String getContent() {
+			return content;
+		}
+		public void setContent(String content) {
+			this.content = content;
+		}
+		public String getPassword() {
+			return password;
+		}
+		public void setPassword(String password) {
+			this.password = password;
+		}
+		public Post to(Integer postId) {
+			Post post = new Post();
+			post.setTitle(title);
+			post.setContent(content);
+			post.setPassword(password);
+			post.setId(postId);
+			return post;
+		}
+	}
+}

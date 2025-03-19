@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PostDetail</title>
+</head>
+<body>
+    detail
+    <div style="border:1px solid; width:70vw; height:70vh;"id="container">
+        <table style="text-align:center; border: 1px solid black; width: 100%;">
+            <thead>
+                <tr>
+                    <th>num</th>
+                    <th>title</th>
+                    <th>posted</th>
+                    <th>updated</th>
+                    <th>author</th>
+                    <th>view</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="postId"></td>
+                    <td id="title"></td>
+                    <td id="createdAt"></td>
+                    <td id="updatedAt"></td>
+                    <td id="nickname"></td>
+                    <td id="view"></td>
+                </tr>
+            </tbody>
+        </table>
+        <img id="img" src="" style="max-width: 80%; max-height: 80%;">
+        <div id="content">
+    
+        </div>
+    </div>
+    <div>
+        <button onclick="likeBtn(event)">like</button>
+        <button onclick="cancellikeBtn(event)">cancel like</button>
+        <div>likes : <span id="likes">1</span> </div>
+    </div>
+    <a id="update">update</a>
+    <div style="border:1px solid; width:70vw;"id="commentContainer">
+        <table id="commentTable" style="text-align:center; border: 1px solid black; width: 100%;">
+            <tr>
+                <th>mynickname</th>
+                <td>2025.01.12 12:11:0</td>
+                <td><button>delete</button></td>
+            </tr>
+            <tr>
+                <td class="commentContent" colspan="2">
+                    mycomment aaaa a aaa
+                </td>
+            </tr>
+        </table>
+        <div id="content">
+    
+        </div>
+    </div>       
+    <form id="commentForm">
+        <input type="text" id="comment" name="comment" placeholder="add a comment">
+        <input onclick="commentBtn(event)" type="button" value="comment">
+    </form>
+<script type="module">
+    import {baseUrl, getPost, postComment, deleteComment, postPostLike, deletePostLike} from './api.js'
+    function loadPost() {
+        const postId = new URLSearchParams(window.location.search).get("postId")
+        getPost(postId)
+        .then(({response, body})=>{
+            if(response.ok){
+                const data = body.data
+                const container = document.getElementById('container')
+                document.getElementById('postId').innerHTML=data.id
+                document.getElementById('title').innerHTML=data.title
+                document.getElementById('createdAt').innerHTML=data.createdAt
+                document.getElementById('updatedAt').innerHTML=data.updatedAt
+                document.getElementById('view').innerHTML=data.view
+                document.getElementById('nickname').innerHTML= data.nickname
+                document.getElementById('content').innerHTML=data.content
+                console.log(data.imageId)
+                document.getElementById('img').src=baseUrl+`/images/${data.imageName}`
+                document.getElementById('update').href='http://localhost:5500/updatePost.html?postId='+data.id
+                document.getElementById('likes').innerHTML = data.likes
+                    
+                sessionStorage.setItem('postId', data.id)
+                sessionStorage.setItem('title', data.title)
+                sessionStorage.setItem('content', data.content)
+                sessionStorage.setItem('authorId', data.userId)
+                sessionStorage.setItem('imageId', data.imageId)
+                console.log(data.imageName)
+                printComments(body.data.commentList)
+
+            }
+            else{
+                alert(body.message)
+                window.location.href='http://localhost:5500'
+            }
+        })
+    }
+
+    function commentBtn(event){
+        event.preventDefault();
+        const postId = Number.parseInt(new URLSearchParams(window.location.search).get("postId"))
+        const data = {
+            content: document.getElementById('comment').value,
+            postId: postId
+        }
+        postComment(data)
+        .then(({response, body})=>{
+            if(response.ok){
+                alert(body.message)
+                window.location.reload(true)
+            }
+            else{
+                alert(body.message)
+            }
+        })
+    }
+
+    function printComments(commentList){
+        const commentTable = document.getElementById('commentTable')
+        let size = commentTable.rows.length
+        while(size != 0){
+            commentTable.deleteRow(0)
+            size--
+        }
+        
+        commentList.forEach((comment) => {
+            const infoRow = commentTable.insertRow();
+            infoRow.innerHTML = `
+                            <th>${comment.nickname}</th>
+                            <td>${comment.createdAt}</td>
+                            <td><button onclick="deleteCommentBtn(${comment.id})">delete</button>
+                            \
+                        `;
+            const contentRow = commentTable.insertRow();
+            contentRow.innerHTML = `
+                            <td colspan="2">${comment.content}</td>
+                        `
+        });
+    }
+
+    function deleteCommentBtn(commentId){
+        const postId = new URLSearchParams(window.location.search).get("postId")
+
+        deleteComment(commentId)
+        .then(({response, body})=>{
+            if(response.ok){
+                alert(body.message)
+                window.location.reload(true)                
+            }
+            else{
+                alert(body.message)
+            }
+        })
+
+    }
+
+    function likeBtn(event){
+        const postId = new URLSearchParams(window.location.search).get("postId")
+        event.preventDefault();
+        postPostLike(postId)
+        .then(({response, body})=>{
+            if(response.ok){
+                alert(body.message)
+                window.location.reload(true)
+            }
+            else{
+                alert(body.message)
+            }
+        })
+
+    }
+
+    function cancellikeBtn(event){
+        const postId = new URLSearchParams(window.location.search).get("postId")
+        event.preventDefault();
+        deletePostLike(postId)
+        .then(({response, body})=>{
+            if(response.ok){
+                alert(body.message)
+                window.location.reload(true)
+            }
+            else{
+                alert(body.message)
+            }
+        })
+    }
+
+    window.onload = loadPost;
+    window.commentBtn = commentBtn
+    window.deleteCommentBtn = deleteCommentBtn
+    window.likeBtn = likeBtn
+    window.cancellikeBtn = cancellikeBtn
+</script>
+</body>
+</html>

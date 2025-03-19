@@ -1,0 +1,17 @@
+package com.example.demo.tmp;
+
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.springframework.stereotype.Component;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+@Aspect
+@Component
+public class AuthHandler {
+
+	@Before("excution(* com.example.demo.controller.UserController.getStatus(..))")
+	public void auth() {
+		System.out.println("before");
+	}
+}

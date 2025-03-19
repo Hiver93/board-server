@@ -1,0 +1,16 @@
+package com.example.demo.domain;
+
+import jakarta.persistence.Entity;
+
+@Entity
+public class Post {
+
+	private Integer id;
+	private String title;
+	private String content;
+	private String password;
+	private Integer view;	
+	private User user;
+	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
+}

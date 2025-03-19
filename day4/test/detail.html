@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    detail
+    <div id="container">
+    </div>
+<script>
+    // 서버에서 게시글 목록을 가져오는 함수
+    async function loadPost() {
+    const postId = new URLSearchParams(window.location.search).get("postId");
+    console.log("postId:", postId); // postId 값 확인
+
+    if (!postId) {
+        console.error("postId가 제공되지 않았습니다.");
+        return;
+    }
+
+    try {
+        const response = await fetch('http://localhost:8080/posts/' + postId, {
+            method: 'GET'
+        });
+        console.log('Response status:', response.status);
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data); // 응답 데이터 확인
+            const container = document.getElementById('container');
+            container.innerHTML = `
+                <div>${data.id}</div>
+                <div>${data.title}</div>
+                <div>${data.content}</div>
+            `;
+        } else {
+            console.error('서버 오류:', response.statusText);
+        }
+    } catch (error) {
+        console.error('데이터를 가져오는 데 오류가 발생했습니다:', error);
+    }
+}
+    window.onload = loadPost;
+</script>    
+</body>
+</html>

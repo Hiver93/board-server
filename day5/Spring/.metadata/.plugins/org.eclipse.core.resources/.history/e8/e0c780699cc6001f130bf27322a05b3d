@@ -1,0 +1,44 @@
+package com.example.board.repository;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.example.board.domain.Post;
+
+public class PostRepository {
+	private Map<Long,Post> postMap = new HashMap<>();
+	private long lastId = 0;
+	
+	private void save(Post post) {
+		post.setId(++lastId);
+		postMap.put(post.getId(), post);
+	}
+	
+	private List<Post> findAll(){
+		List<Post> postList = new ArrayList<>();
+		for(var entry : postMap.entrySet()){
+			postList.add(entry.getValue());
+		}
+		return postList;
+	}
+	
+	private Post findById(long postId) {
+		return postMap.get(postId);
+	}
+	
+	private void deleteById(long postId) {
+		if(!postMap.containsKey(postId)) {
+			throw new RuntimeException("not found");
+		}
+		postMap.remove(postId);
+	}
+	
+	private void update(Post post) {
+		if(!postMap.containsKey(post.getId())) {
+			throw new RuntimeException("not found");
+		}
+		postMap.put(post.getId(), post);
+	}
+}

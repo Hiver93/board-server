@@ -1,0 +1,22 @@
+package com.example.demo.util;
+
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import com.example.demo.error.BoardException;
+import com.example.demo.error.ErrorCode;
+
+public class AuthenticationUtil {
+
+	public static Integer getUserId() {
+		Integer userId = (Integer)((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest().getSession().getAttribute("usreId");
+		if(userId == null) {
+			throw new BoardException(ErrorCode.AUTHENTICATION_REQUIRED);
+		}
+		return userId;
+	}
+	
+	public static void setUserId(Integer userId) {
+		((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest().getSession().setAttribute("userId", userId);
+	}
+}

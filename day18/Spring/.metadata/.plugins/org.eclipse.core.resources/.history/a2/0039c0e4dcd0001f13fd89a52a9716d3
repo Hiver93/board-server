@@ -1,0 +1,11 @@
+package com.example.board.exceptions;
+
+public class ErrorResponseBody {
+	private String message;
+
+	public ErrorResponseBody(String message) {
+		super();
+		this.message = message;
+	}
+	
+}

@@ -1,0 +1,21 @@
+package com.example.demo.dto;
+
+import com.example.demo.domain.Post;
+
+public class CommentReqDto {
+
+	public static class Create{
+		private String content;
+
+		public Create() {
+			super();
+		}
+
+		public void setContent(String content) {
+			this.content = content;
+		}
+		public Comment to(User user, Integer postId) {
+			
+		}
+	}
+}

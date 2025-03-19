@@ -1,0 +1,11 @@
+package com.example.demo.controller;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@RestController
+@RequestMapping("/posts")
+@CrossOrigin(origins = "*")
+public class PostController {
+
+}

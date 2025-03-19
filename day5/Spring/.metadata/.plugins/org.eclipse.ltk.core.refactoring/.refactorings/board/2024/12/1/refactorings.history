@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename method &apos;com.example.board.domain.service.PostService.craetePost(...)&apos; to &apos;createPost&apos;&#x0D;&#x0A;- Original project: &apos;board&apos;&#x0D;&#x0A;- Original element: &apos;com.example.board.domain.service.PostService.craetePost(...)&apos;&#x0D;&#x0A;- Renamed element: &apos;com.example.board.domain.service.PostService.createPost(...)&apos;&#x0D;&#x0A;- Update references to refactored element" delegate="false" deprecate="false" description="Rename method &apos;craetePost&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.method" input="/src\/main\/java=/gradle_scope=/main=/=/gradle_used_by_scope=/main,test=/&lt;com.example.board.domain.service{PostService.java[PostService~craetePost~QPost;" name="createPost" references="true" stamp="1735556431589" version="1.0"/>
+</session>

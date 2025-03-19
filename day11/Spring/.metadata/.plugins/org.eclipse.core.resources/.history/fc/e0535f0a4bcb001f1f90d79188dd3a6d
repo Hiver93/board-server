@@ -1,0 +1,45 @@
+package com.example.board.service;
+
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import com.example.board.dto.PostResponseDto;
+import com.example.board.entity.Post;
+import com.example.board.repository.PostRepository;
+
+@Service
+public class PostService {
+	
+	private PostRepository postRepository;
+	
+	public PostService(PostRepository postRepository) {
+		this.postRepository = postRepository;
+	}
+	
+	public void createPost(Post post) {
+		this.postRepository.save(post);
+	}
+	
+	public List<PostResponseDto> getPostList(Pageable pageable, String keyword){
+		List<Post> postList = this.postRepository.findAllByTitleContaining(pageable, keyword).getContent();
+		return postList.stream()
+				.map(post ->
+						new PostResponseDto(
+								post.getId(), post.getTitle(), post.getContent(), 
+								post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss")), 
+								post.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss"))))
+				.collect(Collectors.toList());
+	}
+	
+	public PostResponseDto getPost(long postId) {
+		Post post = this.postRepository.findById(postId).orElseThrow();
+		return new PostResponseDto(
+				post.getId(), post.getTitle(), post.getContent(), 
+				post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss")), 
+				post.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss")));
+	}
+}

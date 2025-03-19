@@ -1,0 +1,44 @@
+package com.example.demo.controller;
+
+import java.io.IOException;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.example.demo.common.BaseResBody;
+import com.example.demo.service.ImageService;
+
+@RestController
+@RequestMapping("/images")
+public class ImageController {
+
+	private ImageService imageService;
+	
+	
+	public ImageController(ImageService imageService) {
+		super();
+		this.imageService = imageService;
+	}
+
+	@PostMapping
+	public ResponseEntity<BaseResBody<Void>> postFile(@RequestPart(name = "file") MultipartFile file) throws IOException{
+		this.imageService.saveImage(file);
+		return new BaseResBody<Void>(
+				null, 
+				"file saved")
+				.toResponse(HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/{imageId}")
+	public byte[] postFile(@PathVariable(name = "imageId") Integer imageId) throws IOException{
+		
+		return this.imageService.getImage(imageId);
+	}
+}

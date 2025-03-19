@@ -1,0 +1,20 @@
+package com.example.demo.dto;
+
+public class PostResDto {
+
+	public static record PostList(
+			) {
+		
+		
+		public static record ListItem(
+				Integer id,
+				String title,
+				Integer view,
+				String nickname,
+				String createdAt,
+				String updatedAt
+				) {
+			
+		}
+	}
+}

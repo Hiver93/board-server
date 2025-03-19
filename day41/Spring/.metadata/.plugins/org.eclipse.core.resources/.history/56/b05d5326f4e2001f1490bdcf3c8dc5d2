@@ -1,0 +1,7 @@
+package com.example.demo.common;
+
+public class BaseResBody {
+
+	private Object data;
+	private String message;
+}

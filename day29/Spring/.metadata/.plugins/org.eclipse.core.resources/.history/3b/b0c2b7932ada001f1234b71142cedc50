@@ -1,0 +1,15 @@
+package com.example.demo.tmp;
+
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.stereotype.Component;
+
+@Aspect
+@Component
+public class TmpHandler {
+
+	@Pointcut("execution(com.example.demo.UserController.test(..))")
+	public void testBefore() {
+		System.out.println("before");
+	}
+}

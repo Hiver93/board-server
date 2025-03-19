@@ -1,0 +1,30 @@
+package com.example.demo.common;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+public class SuccessfulBody<T>{
+	public T t;
+	public String message;
+	private SuccessfulBody(T t, String message) {
+		super();
+		this.t = t;
+		this.message = message;
+	}
+
+	private SuccessfulBody(String message) {
+		super();
+	}
+	
+	public static <T> ResponseEntity<SuccessfulBody<T>> of(HttpStatus status, T t, String message){
+		return ResponseEntity.status(status)
+				.body(new SuccessfulBody<>(t,message));
+	}
+}
+
+class TestBody{
+//	public static void main(String[] args) {
+//		SuccessfulBody<Void> body = new SuccessfulBody<>();
+//		System.out.println(body.t);
+//	}
+}

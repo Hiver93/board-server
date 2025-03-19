@@ -1,0 +1,18 @@
+package com.example.demo;
+
+public class BaseResponseBody {
+	String message;
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public BaseResponseBody() {
+		super();
+	}
+	
+}

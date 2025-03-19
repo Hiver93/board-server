@@ -1,0 +1,24 @@
+package com.example.demo.error;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatus.*;
+
+public enum ErrorCode {
+	private final HttpStatus status;
+	private final String messge;
+	
+	POST_NOT_FOUND(HttpStatus,"post not found");
+	
+	
+	private ErrorCode(HttpStatus status, String messge) {
+		this.status = status;
+		this.messge = messge;
+	}
+	public HttpStatus getStatus() {
+		return status;
+	}
+	public String getMessge() {
+		return messge;
+	}
+	
+}

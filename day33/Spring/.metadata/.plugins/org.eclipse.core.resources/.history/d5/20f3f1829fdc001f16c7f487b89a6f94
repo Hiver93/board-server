@@ -1,0 +1,12 @@
+package com.example.demo.domain;
+
+import jakarta.persistence.Entity;
+
+@Entity(name = "users")
+public class User {
+
+	private Integer id;
+	private String username;
+	private Srring password;
+	private String nickname;
+}

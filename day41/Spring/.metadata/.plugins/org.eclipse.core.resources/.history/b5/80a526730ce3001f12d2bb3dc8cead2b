@@ -1,0 +1,65 @@
+package com.example.demo.service;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import com.example.demo.domain.User;
+import com.example.demo.error.BoardException;
+import com.example.demo.error.ErrorCode;
+import com.example.demo.util.JwtUtil;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+@Service
+public class AuthenticationService {
+
+	private final long ACCESS_TOKEN_EXP = 1000 * 10 * 10;
+	private final long REFRESH_TOKEN_EXP = 1000 * 60 * 60 * 24;
+	
+	private JwtUtil jwtUtil;
+	
+	public AuthenticationService(JwtUtil jwtUtil) {
+		super();
+		this.jwtUtil = jwtUtil;
+	}
+
+	public void setAuthentication(User user) {
+		String accessToken = jwtUtil.generateToken(user, ACCESS_TOKEN_EXP);
+		String refreshToken = jwtUtil.generateToken(user, REFRESH_TOKEN_EXP);
+		HttpServletResponse response = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getResponse();
+		Cookie cookie = new Cookie("refresh", refreshToken);
+		cookie.setPath("/");
+		cookie.setHttpOnly(true);
+		cookie.setSecure(true);
+		response.addCookie(cookie);
+		response.setHeader("Authorization", accessToken);
+		System.out.println(accessToken);
+	}
+	
+	public User authenticate() {
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+		String accessToken = request.getHeader("Authorization");
+		System.out.println(accessToken);
+		if(accessToken == null) {
+			throw new BoardException(ErrorCode.AUTHENTICATION_REQUIRED);
+		}
+		try {
+			return jwtUtil.getUser(accessToken);
+		}catch(BoardException e) {
+			if(e.getErrorCode().equals(ErrorCode.EXPIRED_JWT)) {
+				System.out.println("exp");
+				for(Cookie c : request.getCookies()) {
+					if(c.getName().equals("refresh")) {
+						User user = jwtUtil.getUser(c.getValue());
+						setAuthentication(user);
+						return user;
+					}
+				}
+			}
+			throw e;
+		}
+	}
+}

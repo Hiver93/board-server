@@ -1,0 +1,8 @@
+package com.example.board.error;
+
+public class PostException extends RuntimeException {
+	private String message;
+	public PostException(String message) {
+		super(message);
+	}
+}

@@ -1,0 +1,32 @@
+package com.example.demo.error;
+
+import org.springframework.http.HttpStatus;
+
+public enum ErrorCode {
+	
+	PASSWORD_REQUIRED(HttpStatus.BAD_REQUEST, "password is required"),
+	
+	CONTENT_NOT_FOUND(HttpStatus.NOT_FOUND, "content not found"),
+	USER_NOT_FOUND(HttpStatus.NOT_FOUND, "user not foound"),
+	LIKE_NOT_FOUND(HttpStatus.NOT_FOUND, "not like yet"),
+	
+	INCORRECT_PASSWORD(HttpStatus.FORBIDDEN, "incorrect password"),
+	NOT_SAME_USER(HttpStatus.FORBIDDEN, "not same user"),
+	NOT_CONTENT_OWNER(HttpStatus.FORBIDDEN, "not content owner"),
+	
+	USERNAME_CONFLICT(HttpStatus.CONFLICT, "username conflict"),
+	LIKE_CONFLICT(HttpStatus.CONFLICT, "aleady liked");
+	private final HttpStatus status;
+	private final String message;
+	private ErrorCode(HttpStatus status, String message) {
+		this.status = status;
+		this.message = message;
+	}
+	public HttpStatus getStatus() {
+		return status;
+	}
+	public String getMessage() {
+		return message;
+	}
+	
+}

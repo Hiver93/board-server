@@ -1,0 +1,32 @@
+package com.example.demo.controller;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.common.BaseResBody;
+import com.example.demo.facade.UserFacade;
+
+@RestController
+@RequestMapping("/users")
+public class UserController {
+
+	private UserFacade userFacade;
+
+	public UserController(UserFacade userFacade) {
+		super();
+		this.userFacade = userFacade;
+	}
+	
+	@PostMapping("/signup")
+	public ResponseEntity<BaseResBody<Void>> postPostLike(@PathVariable(name = "postId") Integer postId){
+		this.postFacade.addPostLike(postId);
+		return new BaseResBody<Void>(
+				null
+				, "liked")
+				.toResponse(HttpStatus.CREATED);
+	}
+}

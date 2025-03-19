@@ -1,0 +1,36 @@
+package com.example.demo.domain;
+
+import java.util.List;
+
+import jakarta.persistence.Entity;
+
+@Entity(name = "users")
+public class User {
+
+	private String username;
+	private String password;
+	private String nickname;
+	private List<Post> postList;
+	public User(String username, String password, String nickname) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.nickname = nickname;
+	}
+	public User() {
+		super();
+	}
+	public String getUsername() {
+		return username;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public String getNickname() {
+		return nickname;
+	}
+	public List<Post> getPostList() {
+		return postList;
+	}
+	
+}

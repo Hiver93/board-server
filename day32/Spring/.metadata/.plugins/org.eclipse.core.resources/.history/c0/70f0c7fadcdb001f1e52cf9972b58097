@@ -1,0 +1,14 @@
+package com.example.demo.error;
+
+import org.springframework.http.HttpStatus;
+
+public enum ErrorCode {
+
+	POST_NOT_FOUND(HttpStatus.NOT_FOUND,"post not found"),
+	INCORRECT_PASSWORD(HttpStatus.UNAUTHORIZED,"incorrect password"),
+	
+	USERNAME_CONFLICT(HttpStatus.CONFLICT,"username conflict"),
+	USER_NOT_FOUND(HttpStatus.NOT_FOUND,"user not found"),
+	AUTHENTICATION_REQUIRED(HttpStatus.UNAUTHORIZED,"please login"),
+	INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED,"username or password is wrong")
+}

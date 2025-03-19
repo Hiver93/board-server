@@ -1,0 +1,8 @@
+package com.example.demo.dto;
+
+public class CommentReqDto {
+
+	public static class Create{
+		private String content;
+	}
+}

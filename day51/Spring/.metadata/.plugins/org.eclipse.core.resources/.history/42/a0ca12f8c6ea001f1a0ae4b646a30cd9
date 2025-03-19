@@ -1,0 +1,55 @@
+package com.example.demo.dto;
+
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import com.example.demo.domain.Post;
+
+public class PostResDto {
+
+	public static record PostList(
+			long totalSize,
+			List<ListItem> postList
+			) {
+		
+		public static PostList from(long totalSize, List<Post> postList) {
+			return new PostList(totalSize, postList.stream().map(ListItem::from).toList());
+		}
+		
+		public static record ListItem(
+				Integer id,
+				String title,
+				Integer view,
+				Integer userId,
+				String nickname,
+				String createdAt,
+				String updatedAt
+				) {
+			
+			public static ListItem from(Post post) {
+				return new ListItem(post.getId(), post.getTitle(), post.getView(), post.getUser().getId(), post.getUser().getNickname(),
+						post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+						post.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+			}
+		}
+	}
+	
+	public static record Detail(
+			Integer id,
+			String title,
+			String content,
+			Integer view,
+			Integer userId,
+			String nickname,
+			String createdAt,
+			String updatedAt,
+			List<CommentResDto> commentList
+			) {
+		
+		public static Detail from(Post post) {
+			return new Detail(post.getId(), post.getTitle(), post.getContent(), post.getView(), post.getUser().getId(), post.getUser().getNickname(),
+					post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+					post.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+		}
+	}
+}

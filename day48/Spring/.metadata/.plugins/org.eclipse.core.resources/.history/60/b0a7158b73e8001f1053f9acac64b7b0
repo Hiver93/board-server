@@ -1,0 +1,19 @@
+package com.example.demo.domain;
+
+import java.time.LocalDateTime;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+
+@Entity
+@EntityListeners(value = AuditingEntityListener.class)
+public class Comment {
+
+	private Integer id;
+	private String content;
+	private Post post;
+	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
+}

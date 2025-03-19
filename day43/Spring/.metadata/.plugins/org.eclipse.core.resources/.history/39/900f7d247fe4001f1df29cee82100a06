@@ -1,0 +1,50 @@
+package com.example.demo.service;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import com.example.demo.domain.User;
+import com.example.demo.error.BoardException;
+import com.example.demo.error.ErrorCode;
+import com.example.demo.util.JwtUtil;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+@Service
+public class AuthService {
+
+	private final long ACCESS_EXP = 1000 * 60 * 30;
+	private final long REFRESH_EXP = 1000 * 60 * 60 * 3;
+	private JwtUtil jwtUtil;
+
+	public AuthService(JwtUtil jwtUtil) {
+		super();
+		this.jwtUtil = jwtUtil;
+	}
+	
+	public void setAuthentication(User user) {
+		String access = this.jwtUtil.generateToken(user, ACCESS_EXP);
+		String refresh = this.jwtUtil.generateToken(user, REFRESH_EXP);
+		HttpServletResponse response = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getResponse();
+		
+		Cookie cookie = new Cookie("refresh", refresh);
+		cookie.setPath("/");
+		cookie.setHttpOnly(true);
+		cookie.setSecure(true);
+		response.addCookie(cookie);
+		response.setHeader("Authorization", access);
+	}
+	
+	public User authenticate() {
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+		
+		String token = request.getHeader("Authorization");
+		if(token == null) {
+			throw new BoardException(ErrorCode.AUTHENTICATION_REQUIRED);
+		}
+		return jwtUtil.getUser(token);
+	}
+}

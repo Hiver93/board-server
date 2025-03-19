@@ -1,0 +1,24 @@
+package com.example.demo.facade;
+
+import com.example.demo.dto.UserReqDto;
+import com.example.demo.service.AuthService;
+import com.example.demo.service.UserService;
+
+public class UserFacade {
+
+	private UserService userService;
+	private AuthService authService;
+	public UserFacade(UserService userService, AuthService authService) {
+		super();
+		this.userService = userService;
+		this.authService = authService;
+	}
+	
+	public void signup(UserReqDto.Signup dto) {
+		this.userService.createUser(dto.getUsername(), dto.getPassword(), dto.getNickname());
+	}
+	
+	public void login(UserReqDto.Login dto) {
+		this.authService.setAuthentication(this.userService.getUser(dto.getUsername(), dto.getPassword()));
+	}
+}

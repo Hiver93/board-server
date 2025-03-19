@@ -1,0 +1,24 @@
+package com.example.demo.dto;
+
+import com.example.demo.domain.Comment;
+import com.example.demo.domain.User;
+
+public class PostResDto {
+
+	public static record Detail() {
+		
+		private static record CommentItem(
+				Integer id,
+				String content,
+				Integer userId,
+				String nickname
+				) {
+			public static CommentItem from(Comment comment) {
+				User user = comment.getUser();
+				if(!user.isActivated()) {
+					user = User.builder().id(null).nickname("anonymous").build();
+				}
+			}
+		}
+	}
+}

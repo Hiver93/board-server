@@ -1,0 +1,34 @@
+package com.example.demo.dto;
+
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import com.example.demo.domain.Comment;
+
+public class PostResDto {
+
+	public static record Detail(
+			Integer id,
+			String title,
+			String content,
+			String nickname,
+			Integer userId,
+			String createdAt,
+			String updatedAt,
+			List<CommentItem> commentList
+			) {
+		
+		private static record CommentItem(
+				Integer id,
+				String content,
+				String nickname,
+				Integer userId,
+				String createdAt
+				) {
+			private static CommentItem from(Comment comment) {
+				return new CommentItem(comment.getId(), comment.getContent(), comment.getUser().getNickname(), comment.getUser().getId(),
+						comment.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+			}
+		}
+	}
+}

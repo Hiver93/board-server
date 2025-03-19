@@ -1,0 +1,14 @@
+package com.example.demo.error;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.example.demo.common.BaseResBody;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+	public ResponseEntity<BaseResBody> boardException(BoardException boardException){
+		return BaseResBody.of(boardException.getErrorCode().getStatus(), boardException.getErrorCode().getMessage())
+	}
+}

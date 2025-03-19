@@ -1,0 +1,37 @@
+package com.example.demo.facade;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.example.demo.dto.PostReqDto;
+import com.example.demo.service.AuthService;
+import com.example.demo.service.CommentService;
+import com.example.demo.service.ImageService;
+import com.example.demo.service.PostLikeService;
+import com.example.demo.service.PostService;
+
+@Service
+public class PostFacade {
+
+	private PostService postService;
+	private PostLikeService postLikeService;
+	private CommentService commentService;
+	private ImageService imageService;
+	private AuthService authService;
+	
+	
+	public PostFacade(PostService postService, PostLikeService postLikeService, CommentService commentService,
+			ImageService imageService, AuthService authService) {
+		super();
+		this.postService = postService;
+		this.postLikeService = postLikeService;
+		this.commentService = commentService;
+		this.imageService = imageService;
+		this.authService = authService;
+	}
+
+
+	public void createPost(PostReqDto.Create dto, MultipartFile imageFile) {
+		
+	}
+}

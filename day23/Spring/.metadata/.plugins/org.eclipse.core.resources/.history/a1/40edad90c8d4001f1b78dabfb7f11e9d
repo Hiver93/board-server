@@ -1,0 +1,17 @@
+package com.example.demo.error;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.example.demo.BaseResponeBody;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+	@ExceptionHandler(PostException.class)
+	public ResponseEntity<BaseResponeBody> postException(PostException postException){
+		return null;
+	}
+
+}

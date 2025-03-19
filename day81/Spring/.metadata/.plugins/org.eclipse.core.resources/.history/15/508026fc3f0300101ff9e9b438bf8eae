@@ -1,0 +1,23 @@
+package com.example.demo.service;
+
+import org.springframework.stereotype.Service;
+
+import com.example.demo.domain.Post;
+import com.example.demo.domain.PostLike;
+import com.example.demo.domain.User;
+import com.example.demo.repository.PostRepository;
+
+@Service
+public class PostLikeService {
+
+	private PostRepository postRepository;
+
+	public PostLikeService(PostRepository postRepository) {
+		super();
+		this.postRepository = postRepository;
+	}
+	
+	public PostLike createPostLike(Post post, User user) {
+		this.postRepository.findAllByUser_NicknameContaining(user.getId(), post.getId())
+	}
+}

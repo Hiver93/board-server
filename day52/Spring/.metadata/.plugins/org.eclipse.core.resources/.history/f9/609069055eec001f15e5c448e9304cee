@@ -1,0 +1,20 @@
+package com.example.demo;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import com.example.demo.common.SuccessfulBody;
+
+public class BodyTest {
+
+	@Test
+	public void test() {
+		
+		ResponseEntity<SuccessfulBody<Void>> r;
+		// 이게 불가능해야함
+		r = new SuccessfulBody<Void>("message");
+		a.toResponse(HttpStatus.OK);
+		
+	}
+}

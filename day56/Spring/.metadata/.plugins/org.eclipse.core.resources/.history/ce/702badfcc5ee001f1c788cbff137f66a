@@ -1,0 +1,32 @@
+package com.example.demo.dto;
+
+import java.util.List;
+
+import com.example.demo.dto.PostResDto.Detail.CommentItem;
+
+public class PostResDto {
+
+	public static record Detail(
+			Integer id,
+			String title,
+			String content,
+			Integer view,
+			Integer userId,
+			String nickname,
+			String createdAt,
+			String updatedAt,
+			List<CommentItem> commentList
+			) {
+		
+		
+		public static record CommentItem(
+				Integer id,
+				String content,
+				Integer userId,
+				String nickname,
+				String createdAt
+				) {
+			
+		}
+	}
+}

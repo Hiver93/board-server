@@ -1,0 +1,30 @@
+package com.example.demo;
+
+import java.util.Date;
+
+import javax.crypto.SecretKey;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+
+public class JwtUtil {
+
+	private SecretKey getSigningKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(KEY);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+	
+	final String KEY = "abcd";
+	public String build() {
+		Date cur = new Date();
+		Date exp = new Date(cur.getTime() + 1000 * 60 * 60);
+		return Jwts.builder()
+				.claim("id", 3)
+				.issuedAt(cur)
+				.expiration(exp)
+				.signWith(getSigningKey())
+				.compact();
+	}
+}

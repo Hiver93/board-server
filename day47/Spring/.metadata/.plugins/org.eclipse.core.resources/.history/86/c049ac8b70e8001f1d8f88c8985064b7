@@ -1,0 +1,10 @@
+package com.example.demo.domain;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+
+@Entity
+@EntityListeners
+public class Comment {
+
+}

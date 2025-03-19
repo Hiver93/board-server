@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+</head>
+<body>
+    <h1>login</h1>
+
+    <form>
+        <label>username</label>
+        <input type="text" id="username" name="username" required>
+
+        <label>password</label>
+        <input type="text" id="password" name="password" required>
+
+        <button onclick="login(event)">login</button>
+    </form>
+    <button onclick="getStatus(event)">status</button>
+<script type="module">
+    const baseUrl = 'http://localhost:8080'
+    async function login(event) {
+        event.preventDefault()
+        const username = document.getElementById('username').value
+        const password = document.getElementById('password').value
+        const postId = new URLSearchParams(window.location.search).get("postId")
+        const data = {
+            username:username,
+            password:password
+        }
+        try{
+            const response = await fetch(baseUrl+'/users/login',{
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials:"include",
+                body:JSON.stringify(data)
+                
+            })
+            const body = await response.json();
+            if(response.ok){
+                alert(body.message)
+            }
+            else{
+                alert("error")
+            }
+        } catch(error){
+            console.error('데이터를 가져오는 데 오류가 발생했습니다:', error);
+        }
+
+    }
+
+    async function getStatus(event) {
+        event.preventDefault()
+
+        try{
+            const response = await fetch(baseUrl+'/users/status',{
+                method: 'GET',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials:"include"
+            })
+            console.log(response)
+            const body = await response.json();
+
+            if(response.ok){
+                alert(
+                    "username : " +body.data.username + "\n"+
+                    "nickname : " +body.data.nickname
+                )
+            }
+            else{
+                alert(body.message)
+            }
+        } catch(error){
+            console.error('데이터를 가져오는 데 오류가 발생했습니다:', error);
+        }
+
+    }
+
+
+  
+    window.login = login
+    window.getStatus = getStatus
+</script>    
+</body>
+</html>

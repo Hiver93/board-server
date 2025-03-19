@@ -1,0 +1,9 @@
+package com.example.demo.controller;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@RestController
+@RequestMapping("/posts")
+public class PostController {
+
+}

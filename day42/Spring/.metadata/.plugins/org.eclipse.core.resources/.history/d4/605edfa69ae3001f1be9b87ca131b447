@@ -1,0 +1,19 @@
+package com.example.demo.dto;
+
+public class PostReqDto {
+
+	public static class Create{
+		private String title;
+		private String content;
+		public Create() {
+			super();
+		}
+		String getTitle() {
+			return title;
+		}
+		String getContent() {
+			return content;
+		}
+		
+	}
+}

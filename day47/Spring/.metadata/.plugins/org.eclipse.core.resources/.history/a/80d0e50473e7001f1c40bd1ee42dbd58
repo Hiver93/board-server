@@ -1,0 +1,29 @@
+package com.example.demo.dto;
+
+import java.time.format.DateTimeFormatter;
+
+import com.example.demo.domain.Post;
+import com.example.demo.dto.PostResDto.PostList.ListItem;
+
+public class UserResDto {
+
+	public static record Profile(
+			Integer userId,
+			String nickname,
+			List<>
+			) {
+		public static record ListItem(
+				Integer id,
+				String title,
+				Integer view,
+				String createdAt,
+				String updatedAt
+				) {
+			public static ListItem from(Post post) {
+				return new ListItem(post.getId(),post.getTitle(),post.getView(),
+						post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+						post.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+			}
+		}
+	}
+}

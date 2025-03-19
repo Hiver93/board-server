@@ -1,0 +1,23 @@
+package com.example.demo.facade;
+
+import org.springframework.stereotype.Service;
+
+import com.example.demo.dto.UserReqDto;
+import com.example.demo.service.AuthService;
+import com.example.demo.service.UserService;
+
+@Service
+public class UserFacade {
+
+	private UserService userService;
+	private AuthService authService;
+	public UserFacade(UserService userService, AuthService authService) {
+		super();
+		this.userService = userService;
+		this.authService = authService;
+	}
+	
+	public void signup(UserReqDto.Signup) {
+		this.userService.createUser();
+	}
+}

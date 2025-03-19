@@ -1,0 +1,27 @@
+package com.example.demo.dto;
+
+import com.example.demo.domain.Post;
+
+public class PostReqDto {
+
+	public static class Create{
+		private String title;
+		private String content;
+		public Create() {
+			super();
+		}
+		public void setTitle(String title) {
+			this.title = title;
+		}
+		public void setContent(String content) {
+			this.content = content;
+		}
+		public Post to() {
+			return Post.builder()
+					.title(title)
+					.content(content)
+					.id(null)
+					.build();
+		}
+	}
+}

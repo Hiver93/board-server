@@ -1,0 +1,11 @@
+package com.example.demo;
+
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties.Jwt;
+
+public class JwtUtil {
+
+	final String KET = "abcd";
+	public String build() {
+		
+	}
+}

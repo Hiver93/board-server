@@ -1,0 +1,16 @@
+package com.example.board.exceptions;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+	@ExceptionHandler(PostException.class)
+	public ResponseEntity<ErrorResponseBody> postException(PostException postException){
+		
+		return ResponseEntity.status(postException.getStatus())
+				.body(new ErrorResponseBody(postException.getMessage()));
+	}
+}

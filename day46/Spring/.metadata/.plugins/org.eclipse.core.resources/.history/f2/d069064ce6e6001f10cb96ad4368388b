@@ -1,0 +1,15 @@
+package com.example.demo.util;
+
+import javax.crypto.SecretKey;
+
+import org.hibernate.annotations.Comment;
+import org.springframework.stereotype.Component;
+
+import io.jsonwebtoken.security.Keys;
+
+@Component
+public class JwtUtil {
+
+	private final String SECRET_STR = "abcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoijabcaskfoijfoij";
+	private final SecretKey SECRET_KEY = Keys.hmacShaKeyFor(SECRET_STR.getBytes());
+}

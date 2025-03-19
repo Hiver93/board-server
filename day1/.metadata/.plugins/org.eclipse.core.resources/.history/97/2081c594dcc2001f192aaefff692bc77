@@ -1,0 +1,22 @@
+package com.example.board.day1.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.board.day1.dto.Board;
+import com.example.board.day1.service.BoardService;
+
+@RestController
+public class BoardController {
+	
+	private final BoardService boardService;
+
+	@Autowired
+	public BoardController(BoardService boardService) {
+		this.boardService = boardService;
+	}
+	
+	public void createBoard(Board board) {
+		this.boardService.createBoard(board);
+	}
+}

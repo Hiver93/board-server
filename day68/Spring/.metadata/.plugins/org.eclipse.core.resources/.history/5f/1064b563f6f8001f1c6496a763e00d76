@@ -1,0 +1,27 @@
+package com.example.demo.domain;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+
+@Entity
+@EntityListeners(value = AuditingEntityListener.class)
+public class Comment {
+
+	private Integer id;
+	private String content;
+	private Post post;
+	private User user;
+	public Comment(Integer id, String content, Post post, User user) {
+		super();
+		this.id = id;
+		this.content = content;
+		this.post = post;
+		this.user = user;
+	}
+	public Comment() {
+		super();
+	}
+	
+}

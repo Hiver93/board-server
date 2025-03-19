@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    detail
+    <div id="container">
+    </div>
+<script>
+    // 서버에서 게시글 목록을 가져오는 함수
+    async function loadPost() {
+        const postId = new URLSearchParams(window.location.search).get("postId")
+        try {
+            const response = await fetch('http://localhost:8080/posts/'+postId); // 서버 URL 
+            if (response.ok) {
+                const data = await response.json();
+                const container = document.getElementById('container')
+                container.innerHTML=`
+                    <div>${post.id}</div>
+                    <div>${post.title}</div>
+                    <div>${post.content}</div>
+                `
+                // 테이블에 데이터 추가
+                // if (data.length > 0) {
+                //     data.forEach((board, index) => {
+                //         const row = boardTable.insertRow();
+                //         row.innerHTML = `
+                //             <td>${board.id}</td>
+                //             <td><a href="http://localhost:5500/detail.html?postId=${board.id}">${board.title}</a></td>
+                //             <td><button onclick="deletePost(${board.id})">삭제</button></td>\
+                //         `;
+                //     });
+                // } else {
+                //     noDataMessage.style.display = 'block'; // 데이터가 없으면 "게시글이 없습니다." 메시지 표시
+                // }
+            } else {
+                console.error('서버 오류:', response.statusText);
+            }
+        } catch (error) {
+            console.error('데이터를 가져오는 데 오류가 발생했습니다:', error);
+        }
+    }
+    window.onload = loadPost;
+</script>    
+</body>
+</html>

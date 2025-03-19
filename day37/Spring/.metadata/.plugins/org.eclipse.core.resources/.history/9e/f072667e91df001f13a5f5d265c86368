@@ -1,0 +1,16 @@
+package com.example.demo.util;
+
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+public class AuthenticationUtil {
+
+	private static final String USER_ID_ATTR_KEY = "userId";
+	
+	public static Integer getUserId() {
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+		Integer userId = (Integer)request.getSession().getAttribute(USER_ID_ATTR_KEY);
+	}
+}

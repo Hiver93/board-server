@@ -1,0 +1,26 @@
+package com.example.demo.util;
+
+import javax.crypto.SecretKey;
+
+import org.springframework.stereotype.Component;
+
+import com.example.demo.domain.User;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+
+@Component
+public class JwtUtil {
+
+	private final String SECRET_STR = "abcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefgh";
+	private final SecretKey SECRET_KEY = Keys.hmacShaKeyFor(SECRET_STR.getBytes());
+	
+	public String genereteToken(User user, long exp) {
+		return Jwts.builder()
+				.claim("userId", user.getId())
+				.signWith(SECRET_KEY)
+				.issuedAt(null)
+				.expiration(null)
+				.compact();
+	}
+}

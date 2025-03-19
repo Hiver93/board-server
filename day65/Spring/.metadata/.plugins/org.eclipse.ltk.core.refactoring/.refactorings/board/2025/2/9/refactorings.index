@@ -1,0 +1,4 @@
+1740750829862	Rename type 'JpaAuditingConfing'
+1740753900879	Rename type 'Detail'
+1740754380501	Rename method 'findAllByUser_nicknameContaining'
+1740754422644	Rename local variable 'page'

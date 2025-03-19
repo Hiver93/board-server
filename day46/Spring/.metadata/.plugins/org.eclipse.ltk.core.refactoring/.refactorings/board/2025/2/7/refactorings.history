@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename local variable &apos;page&apos; in &apos;com.example.demo.service.PostService.getTotalSize(...)&apos; to &apos;size&apos;&#x0D;&#x0A;- Original project: &apos;board&apos;&#x0D;&#x0A;- Original element: &apos;com.example.demo.service.PostService.getTotalSize(String, Set&lt;String&gt;).page&apos;&#x0D;&#x0A;- Renamed element: &apos;page&apos;&#x0D;&#x0A;- Update references to refactored element" description="Rename local variable &apos;page&apos;" id="org.eclipse.jdt.ui.rename.local.variable" input="/src\/main\/java=/gradle_scope=/main=/=/gradle_used_by_scope=/main,test=/&lt;com.example.demo.service{PostService.java[PostService~getTotalSize~QString;~QSet\&lt;QString;&gt;;@page!1433!1448!1444!1447!QPage\&lt;QPost;&gt;;!0!false" name="size" references="true" stamp="1739105793044" version="1.0"/>
+</session>

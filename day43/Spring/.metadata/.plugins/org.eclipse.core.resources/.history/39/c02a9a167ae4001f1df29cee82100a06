@@ -1,0 +1,14 @@
+package com.example.demo.domain;
+
+import java.time.LocalDateTime;
+
+public class Post {
+
+	private Integer id;
+	private String title;
+	private String content;
+	private Integer view;
+	private User user;
+	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
+}

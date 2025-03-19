@@ -1,0 +1,29 @@
+package com.example.demo.facade;
+
+import org.springframework.stereotype.Component;
+
+import com.example.demo.domain.User;
+import com.example.demo.dto.PostReqDto;
+import com.example.demo.service.AuthService;
+import com.example.demo.service.PostService;
+
+@Component
+public class PostFacade {
+
+	private PostService postService;
+	private AuthService authService;
+	
+	public PostFacade(PostService postService, AuthService authService) {
+		super();
+		this.postService = postService;
+		this.authService = authService;
+	}
+
+	public void createPost(PostReqDto.Create dto) {
+		User user = this.authService.getAuthentication();
+		if(user == null) {
+			this.postService.createPost(dto.getTitle(), null, null);			
+		}
+		
+	}
+}

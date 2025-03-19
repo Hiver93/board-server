@@ -1,0 +1,29 @@
+package com.example.demo.common;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+public class BasResBody {
+
+	private Object data;
+	private String message;
+	public BasResBody(Object data, String message) {
+		super();
+		this.data = data;
+		this.message = message;
+	}
+	public BasResBody(String message) {
+		super();
+		this.message = message;
+	}
+	public Object getData() {
+		return data;
+	}
+	public String getMessage() {
+		return message;
+	}
+//	public ResponseEntity<BasResBody> of(HttpStatus status, Object data, String message){
+//		return ResponseEntity.status(status);
+////				.body(new BaseResBody())
+//	}
+}

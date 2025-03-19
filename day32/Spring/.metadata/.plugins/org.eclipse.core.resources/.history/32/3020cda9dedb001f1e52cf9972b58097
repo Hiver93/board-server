@@ -1,0 +1,23 @@
+package com.example.demo.service;
+
+import org.springframework.stereotype.Service;
+
+import com.example.demo.entity.User;
+import com.example.demo.error.BoardException;
+import com.example.demo.error.ErrorCode;
+import com.example.demo.repository.UserRepository;
+
+@Service
+public class UserService {
+
+	private UserRepository userRepository;
+
+	public UserService(UserRepository userRepository) {
+		super();
+		this.userRepository = userRepository;
+	}
+	
+	public void createUser(User user) {
+		this.userRepository.findByUsername(user.getUsername()).ifPresent((u)->{throw new BoardException(ErrorCode.USERNAME_CONFLICT);});
+	}
+}

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename local variable &apos;board&apos; in &apos;com.example.board.day1.repository.BoardRepository.findAll()&apos; to &apos;entry&apos;&#x0D;&#x0A;- Original project: &apos;board&apos;&#x0D;&#x0A;- Original element: &apos;com.example.board.day1.repository.BoardRepository.findAll().board&apos;&#x0D;&#x0A;- Renamed element: &apos;board&apos;&#x0D;&#x0A;- Update references to refactored element" description="Rename local variable &apos;board&apos;" id="org.eclipse.jdt.ui.rename.local.variable" input="/src\/main\/java=/gradle_scope=/main=/=/gradle_used_by_scope=/main,test=/&lt;com.example.board.day1.repository{BoardRepository.java[BoardRepository~findAll@board!534!562!538!542!Ljava.util.Map.Entry\&lt;Ljava.lang.Long;Lcom.example.board.day1.dto.Board;&gt;;!0!false" name="entry" references="true" stamp="1735144444636" version="1.0"/>
+</session>

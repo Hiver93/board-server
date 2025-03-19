@@ -1,0 +1,25 @@
+package com.example.demo.dto;
+
+public class UserResDto {
+
+	public static class Login{
+		private Integer id;
+		private String nickname;
+		public Login() {
+			super();
+		}
+		public Integer getId() {
+			return id;
+		}
+		public void setId(Integer id) {
+			this.id = id;
+		}
+		public String getNickname() {
+			return nickname;
+		}
+		public void setNickname(String nickname) {
+			this.nickname = nickname;
+		}
+		
+	}
+}

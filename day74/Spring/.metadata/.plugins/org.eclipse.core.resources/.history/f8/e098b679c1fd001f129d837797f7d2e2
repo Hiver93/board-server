@@ -1,0 +1,13 @@
+package com.example.demo.dto;
+
+import org.springframework.validation.annotation.Validated;
+
+public class PostReqDto {
+
+	@Validated
+	public static class Create{
+		private String title;
+		private String content;
+		private String password;
+	}
+}

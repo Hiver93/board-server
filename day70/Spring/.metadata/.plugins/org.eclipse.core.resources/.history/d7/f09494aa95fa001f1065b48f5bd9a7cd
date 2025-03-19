@@ -1,0 +1,25 @@
+package com.example.demo.error;
+
+import org.springframework.http.HttpStatus;
+
+public enum ErrorCode {
+	
+	NOT_CONTENT_OWNER(HttpStatus.FORBIDDEN, "not content owner"),
+	
+	POST_NOT_FOUND(HttpStatus.NOT_FOUND, "post not found"),
+	;
+	
+	private final HttpStatus status;
+	private final String message;
+	private ErrorCode(HttpStatus status, String message) {
+		this.status = status;
+		this.message = message;
+	}
+	public HttpStatus getStatus() {
+		return status;
+	}
+	public String getMessage() {
+		return message;
+	}
+	
+}

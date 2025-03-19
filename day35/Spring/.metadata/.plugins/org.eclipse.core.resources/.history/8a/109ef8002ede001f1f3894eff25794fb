@@ -1,0 +1,36 @@
+package com.example.demo.dto;
+
+import com.example.demo.domain.Post;
+import com.example.demo.domain.User;
+
+public class PostReqDto {
+
+	public static class Create{
+		private String title;
+		private String content;
+		public Create() {
+			super();
+		}
+		public String getTitle() {
+			return title;
+		}
+		public void setTitle(String title) {
+			this.title = title;
+		}
+		public String getContent() {
+			return content;
+		}
+		public void setContent(String content) {
+			this.content = content;
+		}
+		public Post to(Integer userId) {
+			Post post = new Post();
+			User user = new User();
+			user.setId(userId);
+			post.setUser(user);
+			post.setTitle(title);
+			post.setContent(content);
+			return post;
+		}
+	}
+}

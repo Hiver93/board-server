@@ -1,0 +1,14 @@
+package com.example.demo.dto;
+
+import org.springframework.validation.annotation.Validated;
+
+public class UserReqDto {
+
+	@Validated
+	public static class Signup{
+		private String username;
+		private String password;
+		private String nickname;
+		
+	}
+}

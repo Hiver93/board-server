@@ -1,0 +1,43 @@
+package com.example.demo.service;
+
+import java.util.List;
+import java.util.Set;
+
+import org.springframework.stereotype.Service;
+
+import com.example.demo.entity.Post;
+import com.example.demo.repository.PostMapper;
+
+@Service
+public class PostService {
+
+	private PostMapper postMapper;
+
+	public PostService(PostMapper postMapper) {
+		super();
+		this.postMapper = postMapper;
+	}
+	
+	public void createPost(Post post) {
+		this.postMapper.save(post);
+	}
+	
+	public List<Post> getPostList(String keyword, Set<String> targets){
+		boolean containTitle = targets.contains("title");
+		boolean containContent = targets.contains("content");
+		List<Post> postList;
+		if(containTitle&&containContent) {
+			postList = this.postMapper.findAllByTitleOrContent(keyword);
+		}
+		else if(containTitle) {
+			postList = this.postMapper.findAllByTitle(keyword);
+		}
+		else if(containContent) {
+			postList = this.postMapper.findByContent(keyword);
+		}
+		
+		return this.postMapper.findAll();
+	}
+	
+	
+}

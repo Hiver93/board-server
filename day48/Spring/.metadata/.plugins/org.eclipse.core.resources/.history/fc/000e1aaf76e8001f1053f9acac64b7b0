@@ -1,0 +1,16 @@
+package com.example.demo.error;
+
+public class BoardException {
+
+	private final ErrorCode errorCode;
+
+	public BoardException(ErrorCode errorCode) {
+		super();
+		this.errorCode = errorCode;
+	}
+
+	public ErrorCode getErrorCode() {
+		return errorCode;
+	}
+	
+}

@@ -1,0 +1,15 @@
+package com.example.demo.service;
+
+import java.util.Set;
+
+import org.springframework.stereotype.Service;
+
+import com.example.demo.repository.ImageRepository;
+
+@Service
+public class ImageService {
+
+	private final String DIR_PATH = "src/main/resources/staic/images/";
+	private final Set<String> ALLOWED_CONTENT = Set.of("image/jpeg", "image/png");
+	private ImageRepository imageRepository;
+}

@@ -1,0 +1,19 @@
+package com.example.demo;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.example.demo.repository.PostRepository;
+
+@SpringBootTest
+public class TmpTest {
+
+	@Autowired
+	private PostRepository postRepository;
+	
+	@Test
+	public void test() {
+		System.out.println(postRepository.findById(2).get().getUser().getNickname());
+	}
+}

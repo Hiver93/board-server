@@ -1,0 +1,89 @@
+package com.example.demo.dto;
+
+import com.example.demo.entity.Post;
+
+public class PostReqDto {
+	public static class Create{
+		private String title;
+		private String content;
+		private String password;
+		public Create() {
+			super();
+		}
+		public String getTitle() {
+			return title;
+		}
+		public void setTitle(String title) {
+			this.title = title;
+		}
+		public String getContent() {
+			return content;
+		}
+		public void setContent(String content) {
+			this.content = content;
+		}
+		public String getPassword() {
+			return password;
+		}
+		public void setPassword(String password) {
+			this.password = password;
+		}
+		public Post toEntity() {
+			Post post = new Post();
+			post.setTitle(title);
+			post.setContent(content);
+			post.setPassword(password);
+			return post;
+		}
+	}
+	
+	public static class Delete{
+		private String password;
+
+		public Delete() {
+			super();
+		}
+
+		public String getPassword() {
+			return password;
+		}
+
+		public void setPassword(String password) {
+			this.password = password;
+		}
+		public Post toEntity(Integer id) {
+			Post post = new Post();
+			post.setPassword(password);
+			post.setId(id);
+			return post;
+		}
+	}
+	
+	public static class Update{
+		private String title;
+		private String content;
+		private String password;
+		public Update() {
+			super();
+		}
+		public String getTitle() {
+			return title;
+		}
+		public void setTitle(String title) {
+			this.title = title;
+		}
+		public String getContent() {
+			return content;
+		}
+		public void setContent(String content) {
+			this.content = content;
+		}
+		public String getPassword() {
+			return password;
+		}
+		public void setPassword(String password) {
+			this.password = password;
+		}
+		
+	}
+}

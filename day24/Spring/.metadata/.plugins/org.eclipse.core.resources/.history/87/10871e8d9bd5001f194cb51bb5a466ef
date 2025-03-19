@@ -1,0 +1,21 @@
+package com.example.demo.service;
+
+import org.springframework.stereotype.Service;
+
+import com.example.demo.entity.Post;
+import com.example.demo.repository.PostMapper;
+
+@Service
+public class PostService {
+
+	public PostMapper postMapper;
+
+	public PostService(PostMapper postMapper) {
+		super();
+		this.postMapper = postMapper;
+	}
+	
+	public void createPost(Post post) {
+		this.postMapper.save(post);
+	}
+}

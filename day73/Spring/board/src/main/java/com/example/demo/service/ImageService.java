@@ -1,0 +1,39 @@
+package com.example.demo.service;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+@Service
+public class ImageService {
+
+	private final String DIR_PATH = "src/main/resources/static/images/";
+	private Map<Integer, String> pathMap = new HashMap<>();
+	private int idx = 0;
+	
+	public void saveImage(MultipartFile file) throws IOException {
+		String fileName = file.getOriginalFilename();
+		String filePath = DIR_PATH + fileName;
+		
+		Path path = Paths.get(filePath);
+		Files.createDirectories(path.getParent());
+		Files.write(path, file.getBytes());
+		pathMap.put(idx++, filePath);
+	}
+	
+	public byte[] getImage(Integer imageId) throws FileNotFoundException, IOException {
+		String filePath = pathMap.get(imageId);
+		try(InputStream inputStream = new FileInputStream(filePath)){
+			return inputStream.readAllBytes();
+		}
+	}
+}

@@ -1,0 +1,16 @@
+package com.example.demo.error;
+
+import org.springframework.http.HttpStatus.*;
+
+public enum ErrorCode {
+	private final HttpStatus status;
+	private final String message;
+
+	INVALID_USERNAME_ARGUMENT(BAD_REQUEST, "username은 필수로 입력하여야합니다."),
+	
+	private ErrorCode(HttpStatus status, String message) {
+		this.status = status;
+		this.message = message;
+	}
+	
+}

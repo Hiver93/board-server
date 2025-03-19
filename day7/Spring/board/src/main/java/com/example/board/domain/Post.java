@@ -1,0 +1,70 @@
+package com.example.board.domain;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class Post {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
+	
+	@Column
+	private String title;
+	
+	@Column
+	private String content;
+	
+	@Column
+	private String password;
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public Post(long id, String title, String content, String password) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.content = content;
+		this.password = password;
+	}
+
+	public Post() {
+		super();
+	}
+	
+	
+	
+}

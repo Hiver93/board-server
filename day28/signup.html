@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>signup</title>
+</head>
+<body>
+    <h1>signup</h1>
+
+    <form>
+        <label>username</label>
+        <input type="text" id="username" name="username" required>
+
+        <label>nickname</label>
+        <input type="text" id="nickname" name="nickname" required>
+
+        <label>password</label>
+        <input type="text" id="password" name="password" required>
+
+        <button onclick="signup(event)">등록</button>
+    </form>
+<script type="module">
+    async function signup(event) {
+        event.preventDefault()
+        const username = document.getElementById('username').value
+        const nickname = document.getElementById('nickname').value
+        const password = document.getElementById('password').value
+        const baseUrl = 'http://localhost:8080'
+        const postId = new URLSearchParams(window.location.search).get("postId")
+        const data = {
+            username: username,
+            nickname: nickname,
+            password: password
+        }
+        try{
+            const response = await fetch(baseUrl+'/users/signup',{
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body:JSON.stringify(data)
+            })            
+            const body = await response.json();
+            if(response.status == 201){
+                alert(body.message)
+            }
+            else{
+                alert(body.message)
+            }
+        } catch(error){
+            alert(error)
+            console.error('데이터를 가져오는 데 오류가 발생했습니다:', error);
+        }
+
+    }
+    window.signup = signup
+</script>    
+</body>
+</html>

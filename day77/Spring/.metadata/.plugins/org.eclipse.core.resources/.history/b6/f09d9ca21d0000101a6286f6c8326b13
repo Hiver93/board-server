@@ -1,0 +1,29 @@
+package com.example.demo.service;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.example.demo.domain.Comment;
+import com.example.demo.domain.Post;
+import com.example.demo.domain.User;
+import com.example.demo.repository.CommentRepository;
+
+@Service
+public class CommentService {
+
+	private CommentRepository commentRepository;
+
+	public CommentService(CommentRepository commentRepository) {
+		super();
+		this.commentRepository = commentRepository;
+	}
+		
+	public Comment createComment(String content, Post post, User user) {
+		Comment saved = this.commentRepository.save(Comment.builder()
+				.content(content)
+				.post(post)
+				.user(user)
+				.build());
+		return saved;
+	}
+}

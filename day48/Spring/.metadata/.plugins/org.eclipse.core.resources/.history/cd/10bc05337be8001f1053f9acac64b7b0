@@ -1,0 +1,11 @@
+package com.example.demo.dto;
+
+import jakarta.validation.constraints.NotBlank;
+
+public class CommentReqDto {
+
+	public static class Create{
+		@NotBlank(message = "content is required")
+		private String content;
+	}
+}

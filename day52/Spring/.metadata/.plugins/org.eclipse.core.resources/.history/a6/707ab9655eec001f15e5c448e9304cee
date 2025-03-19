@@ -1,0 +1,13 @@
+package com.example.demo.common;
+
+public class SuccessfulBody<T> extends BaseBody{
+	public T t;
+	public SuccessfulBody(T t, String message) {
+		super(message);
+		this.t = t;
+	}
+
+	public SuccessfulBody(String message) {
+		super(message);
+	}
+}

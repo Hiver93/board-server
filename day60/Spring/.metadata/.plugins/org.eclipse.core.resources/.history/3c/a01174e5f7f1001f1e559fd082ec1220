@@ -1,0 +1,46 @@
+package com.example.demo.controller;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.common.BaseResBody;
+import com.example.demo.dto.PostReqDto;
+import com.example.demo.dto.UserResDto;
+import com.example.demo.service.AuthService;
+import com.example.demo.service.PostService;
+
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("/posts")
+public class PostController {
+
+	private PostService postService;
+	private AuthService authService;
+	public PostController(PostService postService, AuthService authService) {
+		super();
+		this.postService = postService;
+		this.authService = authService;
+	}
+	
+	@PostMapping
+	public ResponseEntity<BaseResBody<Void>> postPost(@RequestBody @Valid PostReqDto.Create dto){
+		this.postService.createPost(dto.getTitle(), dto.getContent(), this.authService.authenticate());
+		return new BaseResBody<>(result, "get profile")
+				.toResponse(HttpStatus.OK);
+	}
+	
+	@GetMapping("/{userId}")
+	public ResponseEntity<BaseResBody<UserResDto.Profile>> getProfile(@PathVariable(name = "userId") Integer userId){
+		var result = UserResDto.Profile.from(this.userService.getUser(userId));
+		return new BaseResBody<>(result, "get profile")
+				.toResponse(HttpStatus.OK);
+	}
+	
+}

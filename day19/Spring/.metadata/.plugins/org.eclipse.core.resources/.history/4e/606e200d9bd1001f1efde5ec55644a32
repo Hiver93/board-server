@@ -1,0 +1,6 @@
+package com.example.demo.error;
+
+public class ErrorResponseBody {
+
+	private String message;
+}

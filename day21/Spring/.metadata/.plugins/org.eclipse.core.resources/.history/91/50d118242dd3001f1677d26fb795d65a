@@ -1,0 +1,77 @@
+package com.example.demo.controller;
+
+import java.util.Set;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.BaseResBody;
+import com.example.demo.dto.PostReqDto;
+import com.example.demo.dto.PostResDto;
+import com.example.demo.service.PostService;
+
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("/posts")
+@CrossOrigin(origins="*")
+public class PostController {
+
+	private PostService postService;
+
+	public PostController(PostService postService) {
+		super();
+		this.postService = postService;
+	}
+	
+	@PostMapping
+	public ResponseEntity<BaseResBody> postPost(@RequestBody @Valid PostReqDto.Create dto){
+		this.postService.createPost(dto.toEntity());
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(new BaseResBody("success"));
+	}
+	
+	@GetMapping
+	public ResponseEntity<BaseResBody> getPostList(Pageable pageable,@RequestParam(name="keyword") String keyword, @RequestParam(name="target")Set<String> targets){
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(new BaseResBody(
+						this.postService.getPostList(pageable, keyword, targets).stream()
+							.map(PostResDto::fromEntity)
+							.toList(), 
+						"success"));
+	}
+	
+	@GetMapping("/{postId}")
+	public ResponseEntity<BaseResBody> getPost(long postId){
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(new BaseResBody(PostResDto.fromEntity(this.postService.getPost(postId)),"success"));
+	}
+	
+	@DeleteMapping("/{postId}")
+	public ResponseEntity<BaseResBody> deletePost(long postId,@RequestBody @Valid  PostReqDto.Delete dto){
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(new BaseResBody("post num: " +postId+ "deleted"));	
+	}
+	
+	@PutMapping("/{postId}")
+	public ResponseEntity<BaseResBody> putPost(long postId,@RequestBody @Valid  PostReqDto.Update dto){
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(new BaseResBody("post num: " +postId+" updated"));
+	}
+	
+	@GetMapping("/total-size")
+	public ResponseEntity<BaseResBody> getTotalSize(String keyword, Set<String> targets){
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(new BaseResBody(this.postService.getTotalSize(keyword, targets), "success"));
+	}
+}

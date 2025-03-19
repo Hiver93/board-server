@@ -1,0 +1,37 @@
+package com.example.demo.domain;
+
+import java.util.List;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+
+@Entity
+@EntityListeners(value = AuditingEntityListener.class)
+public class Post {
+
+	private Integer id;
+	private String title;
+	private String content;
+	private String password;
+	private User user;
+	private Image image;
+	private Integer view = 0;
+	private List<Comment> commentList;
+	private List<PostLike> postLikeList;
+	private Integer comments;
+	private Integer postLikes;
+	public Post(Integer id, String title, String content, String password, User user) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.content = content;
+		this.password = password;
+		this.user = user;
+	}
+	public Post() {
+		super();
+	}
+	
+}

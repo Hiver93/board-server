@@ -1,0 +1,7 @@
+package com.example.board.day1.dto;
+
+public class Board {
+	long id;
+	String title;
+	String content;
+}

@@ -1,0 +1,19 @@
+package com.example.board.day1.repository;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.stereotype.Repository;
+
+import com.example.board.day1.dto.Board;
+
+@Repository
+public class BoardRepository {
+	Map<Long, Board> boards = new HashMap<>();
+	
+	public void save(Board board) {
+		board.setId(boards.size()+1);
+		this.boards.put(board.getId(), board);
+	}
+
+}

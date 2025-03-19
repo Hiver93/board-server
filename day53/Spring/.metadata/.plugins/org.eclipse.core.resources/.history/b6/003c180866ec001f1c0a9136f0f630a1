@@ -1,0 +1,28 @@
+package com.example.demo.common;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+public class BaseBody<T> {
+
+	@JsonInclude(value = Include.NON_NULL)
+	private T data;
+	private String message;
+	public BaseBody(T data, String message) {
+		super();
+		this.data = data;
+		this.message = message;
+	}
+	public BaseBody(String message) {
+		super();
+		this.message = message;
+	}
+	public T getData() {
+		return data;
+	}
+	public String getMessage() {
+		return message;
+	}
+	
+	
+}

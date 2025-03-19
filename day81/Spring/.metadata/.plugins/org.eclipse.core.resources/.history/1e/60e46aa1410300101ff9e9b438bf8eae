@@ -1,0 +1,19 @@
+package com.example.demo.facade;
+
+import org.springframework.stereotype.Service;
+
+import com.example.demo.service.AuthService;
+import com.example.demo.service.CommentService;
+import com.example.demo.service.ImageService;
+import com.example.demo.service.PostLikeService;
+import com.example.demo.service.PostService;
+
+@Service
+public class PostFacade {
+
+	private PostService postService;
+	private CommentService commentService;
+	private PostLikeService postLikeService;
+	private ImageService imageService;
+	private AuthService authService;
+}

@@ -1,0 +1,16 @@
+package com.example.demo.repository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.demo.entity.Post;
+
+public interface PostRespository extends JpaRepository<Post, Integer>{
+
+	Page<Post> findAllByTitleContainingOrContentContaining(Pageable pageable, String title, String content);
+	Page<Post> findAllByTitleContaining(Pageable pageable, String title);
+	Page<Post> findAllByContentContaining(Pageable pageable, String content);
+	
+	long countByTitleContainingOrContentContaining(String title, String content);
+}

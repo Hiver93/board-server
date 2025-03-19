@@ -1,0 +1,26 @@
+package com.example.demo.error;
+
+import org.springframework.http.HttpStatus;
+
+public enum ErrorCode {
+
+	POST_NOT_FOUND(HttpStatus.NOT_FOUND, "post not found"),
+	NOT_POST_OWNER(HttpStatus.FORBIDDEN, "user is not the owner of this post"),
+	
+	INVALID_CREDENTAILS(HttpStatus.UNAUTHORIZED, "check username or password"),
+	AUTHENTICATION_REAUIRED(HttpStatus.UNAUTHORIZED, "login please");
+	
+	private final HttpStatus status;
+	private final String message;
+	private ErrorCode(HttpStatus status, String message) {
+		this.status = status;
+		this.message = message;
+	}
+	public HttpStatus getStatus() {
+		return status;
+	}
+	public String getMessage() {
+		return message;
+	}
+	
+}

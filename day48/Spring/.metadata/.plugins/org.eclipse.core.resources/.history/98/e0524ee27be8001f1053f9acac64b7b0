@@ -1,0 +1,14 @@
+package com.example.demo.dto;
+
+public class PostResDto {
+
+	public static record PostList(
+			long totalSize,
+			List<ListItem> postList
+			){
+		
+		public static record ListItem() {
+			
+		}
+	}
+}

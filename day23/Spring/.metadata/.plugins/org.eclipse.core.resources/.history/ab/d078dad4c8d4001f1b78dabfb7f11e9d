@@ -1,0 +1,25 @@
+package com.example.demo.error;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.example.demo.BaseResBody;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+	@ExceptionHandler(PostException.class)
+	public ResponseEntity<BaseResBody> postException(PostException postException){
+		return ResponseEntity.status(postException.getErrorCode().getStatus())
+				.body(new BaseResBody(postException.getErrorCode().getMessage()));
+	}
+	
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<BaseResBody> methodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException){
+		return ResponseEntity.status(postException.getErrorCode().getStatus())
+				.body(new BaseResBody(postException.getErrorCode().getMessage()));
+	}
+
+}

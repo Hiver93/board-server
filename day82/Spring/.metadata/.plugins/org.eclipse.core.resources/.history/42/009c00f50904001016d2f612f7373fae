@@ -1,0 +1,24 @@
+package com.example.demo.dto;
+
+import com.example.demo.domain.Comment;
+import com.example.demo.domain.User;
+
+public class PostResDto {
+
+	public static record Detail() {
+		
+		private static record CommentItem(
+				Integer id,
+				String username,
+				Integer userId,
+				String nickname,
+				String createdAt
+				) {
+			private static CommentItem from(Comment comment) {
+				User user = comment.getUser();
+				
+				return new CommentItem(comment.getId(), comment)
+			}
+		}
+	}
+}

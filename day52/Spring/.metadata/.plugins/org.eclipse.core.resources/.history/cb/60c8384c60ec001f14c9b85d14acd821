@@ -1,0 +1,16 @@
+package com.example.demo;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.example.demo.common.BaseBody;
+
+@SpringBootTest
+class BoardApplicationTests {
+
+	@Test
+	void contextLoads() {
+		var d = new BaseBody(null);
+	}
+
+}

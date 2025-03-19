@@ -1,0 +1,45 @@
+package com.example.demo.domain;
+
+import java.time.LocalDateTime;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+
+@Entity
+@EntityListeners(value = AuditingEntityListener.class)
+public class Image {
+
+	private Integer id;
+	private String fileName;
+	private String originalFileName;
+	private Post post;
+	private LocalDateTime createdAt;
+	public Image(Integer id, String fileName, String originalFileName, Post post) {
+		super();
+		this.id = id;
+		this.fileName = fileName;
+		this.originalFileName = originalFileName;
+		this.post = post;
+	}
+	public Image() {
+		super();
+	}
+	public Integer getId() {
+		return id;
+	}
+	public String getFileName() {
+		return fileName;
+	}
+	public String getOriginalFileName() {
+		return originalFileName;
+	}
+	public Post getPost() {
+		return post;
+	}
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+	
+}

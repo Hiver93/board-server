@@ -1,0 +1,13 @@
+package com.example.demo.dto;
+
+public record PostResDto(
+		Integer id,
+		String title,
+		String content,
+		Integer view,
+		Integer userId,
+		String createdAt,
+		String upadtedAt
+		) {
+
+}

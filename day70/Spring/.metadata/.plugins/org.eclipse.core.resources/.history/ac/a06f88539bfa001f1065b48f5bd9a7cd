@@ -1,0 +1,27 @@
+package com.example.demo.service;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.domain.Post;
+import com.example.demo.repository.PostRepository;
+
+@Service
+public class PostService {
+
+	private PostRepository postRepository;
+	private PasswordEncoder passwordEncoder;
+	public PostService(PostRepository postRepository, PasswordEncoder passwordEncoder) {
+		super();
+		this.postRepository = postRepository;
+		this.passwordEncoder = passwordEncoder;
+	}
+	
+	public void createPost(String title, String content, String password) {
+		this.postRepository.save(Post.builder()
+				.title(title)
+				.content(content)
+				.password(password)
+				.build());
+	}
+}

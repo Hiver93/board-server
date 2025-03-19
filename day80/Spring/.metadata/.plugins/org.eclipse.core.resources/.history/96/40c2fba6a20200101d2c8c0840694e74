@@ -1,0 +1,49 @@
+package com.example.demo.facade;
+
+import java.io.IOException;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.example.demo.domain.Post;
+import com.example.demo.dto.PostReqDto;
+import com.example.demo.service.AuthService;
+import com.example.demo.service.CommentService;
+import com.example.demo.service.ImageService;
+import com.example.demo.service.PostLikeService;
+import com.example.demo.service.PostService;
+
+@Service
+public class PostFacade {
+
+	private PostService postService;
+	private CommentService commentService;
+	private PostLikeService postLikeService;
+	private ImageService imageService;
+	private AuthService authService;
+	public PostFacade(PostService postService, CommentService commentService, PostLikeService postLikeService,
+			ImageService imageService, AuthService authService) {
+		super();
+		this.postService = postService;
+		this.commentService = commentService;
+		this.postLikeService = postLikeService;
+		this.imageService = imageService;
+		this.authService = authService;
+	}
+	
+	@Transactional	
+	public void createPost(PostReqDto.Create dto, MultipartFile image) throws IOException {
+		Post post;
+		if(this.authService.isAuthenticated()) {
+			post = this.postService.createPost(dto.getTitle(), dto.getContent(), this.authService.getAuthentication());
+		}
+		else {
+			post = this.postService.createPost(dto.getTitle(), dto.getContent(), dto.getPassword());
+		}
+		
+		if(image != null) {
+			post.setImage(this.imageService.saveImage(post, image));
+		}
+	}
+}

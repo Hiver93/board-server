@@ -1,0 +1,54 @@
+package com.example.demo.service;
+
+import java.util.List;
+import java.util.Set;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.entity.Post;
+import com.example.demo.error.ErrorCode;
+import com.example.demo.error.PostException;
+import com.example.demo.repository.PostRepository;
+
+@Service
+public class PostService {
+
+	private PostRepository postRepository;
+
+	public PostService(PostRepository postRepository) {
+		super();
+		this.postRepository = postRepository;
+	}
+	
+	public void createPost(Post post) {
+		this.postRepository.save(post);
+	}
+	
+	public List<Post> getPostList(Pageable pageable, String keyword, Set<String> targets){
+		boolean containTitle = targets.contains("title");
+		boolean containContent = targets.contains("content");
+		Page<Post> postList;
+		if(containTitle&&containContent) {
+			postList = this.postRepository.findAllByTitleContainingOrContentContaining(pageable, keyword, keyword);
+		}
+		else if(containTitle) {
+			postList = this.postRepository.findAllByTitleContaining(pageable, keyword);
+		}
+		else if(containContent) {
+			postList = this.postRepository.findAllByContentContaining(pageable, keyword);
+		}
+		else {
+			postList = this.postRepository.findAll(pageable);
+		}
+		return postList.getContent();
+	}
+	
+	public Post getPost(Integer postId) {
+		Post saved = this.postRepository.findById(postId).orElseThrow(()->{throw new PostException(ErrorCode.POST_NOT_FOUND);});
+		saved.setView(saved.getView()+1);
+		this.postRepository.save(saved);
+		return saved;
+	}
+}

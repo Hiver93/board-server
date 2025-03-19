@@ -1,0 +1,22 @@
+package com.example.demo.domain;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+
+@Entity(name = "users")
+@EntityListeners(value = AuditingEntityListener.class)
+public class User {
+
+	private Integer id;
+	private String username;
+	private String password;
+	private String nickname;
+	private List<Post> postList;
+	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
+}

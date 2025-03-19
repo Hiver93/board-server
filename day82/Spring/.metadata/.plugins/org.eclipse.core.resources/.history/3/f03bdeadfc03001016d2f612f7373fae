@@ -1,0 +1,25 @@
+package com.example.demo.common;
+
+public class BaseResBody<T> {
+	
+	private T data;
+	private String message;
+	public BaseResBody(T data, String message) {
+		super();
+		this.data = data;
+		this.message = message;
+	}
+	protected T getData() {
+		return data;
+	}
+	protected void setData(T data) {
+		this.data = data;
+	}
+	protected String getMessage() {
+		return message;
+	}
+	protected void setMessage(String message) {
+		this.message = message;
+	}
+	 
+}

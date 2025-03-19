@@ -1,0 +1,5 @@
+package com.example.board.exceptions;
+
+public class GlobalExceptionHandler {
+
+}

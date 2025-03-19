@@ -1,0 +1,21 @@
+package com.example.demo.dto;
+
+import org.springframework.validation.annotation.Validated;
+
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotBlank;
+
+public class UserReqDto {
+
+	@Validated
+	public static class Signup{
+		@NotBlank(message = "username is required")
+		private String username;
+		@Column
+		private String password;
+		@Column
+		private String nickname;
+	}
+	
+	
+}

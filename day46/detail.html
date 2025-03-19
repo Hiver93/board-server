@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    detail
+    <div style="border:1px solid; width:70vw; height:70vh;"id="container">
+        <table style="text-align:center; border: 1px solid black; width: 100%;">
+            <tr>
+                <td id="title"></td>
+            </tr>
+            <colgroup>
+                <col width="25%">
+                <col width="25%">
+                <col width="25%">
+                <col width="25%">
+            </colgroup>
+            <tr>
+                <td id="postId"></td>
+                <td id="createdAt"></td>
+                <td id="updatedAt"></td>
+                <td id="view"></td>
+            </tr>
+        </table>
+        <div >
+            <div>
+                content
+            </div>
+            <div id="content">
+    
+            </div>
+        </div>
+    </div>
+    <a id="update">update</a>
+<script type="module">
+    import {getPost} from './api.js'
+    function loadPost() {
+        const postId = new URLSearchParams(window.location.search).get("postId")
+        getPost(postId)
+        .then(({response, body})=>{
+            if(response.ok){
+                const data = body.data
+                const container = document.getElementById('container')
+                document.getElementById('postId').innerHTML='num '+data.id
+                document.getElementById('title').innerHTML='title '+data.title
+                document.getElementById('createdAt').innerHTML='posted '+data.createdAt
+                document.getElementById('updatedAt').innerHTML='updated ' +data.updatedAt
+                document.getElementById('view').innerHTML='view ' +data.view
+                document.getElementById('content').innerHTML=data.content
+                document.getElementById('update').href='http://localhost:5500/updatePost.html?postId='+data.id
+            }
+            else{
+                alert(body.message)
+                window.location.href='http://localhost:5500'
+            }
+        })
+    }
+    window.onload = loadPost;
+</script>    
+</body>
+</html>

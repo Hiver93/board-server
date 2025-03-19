@@ -1,0 +1,13 @@
+package com.example.demo.entity;
+
+import java.time.LocalDateTime;rters.LocalDateTimeToDateConverter;
+
+public class Post {
+	private long id;
+	private String title;
+	private String content;
+	private long view;
+	private String password;
+	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
+}

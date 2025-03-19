@@ -1,0 +1,60 @@
+package com.example.demo.dto;
+
+import org.springframework.validation.annotation.Validated;
+
+import com.example.demo.domain.Post;
+import com.example.demo.domain.User;
+
+import jakarta.validation.constraints.NotBlank;
+
+public class PostReqDto {
+
+	@Validated
+	private static class Create{
+		@NotBlank(message = "title is required")
+		private String title;
+		@NotBlank(message = "content is required")
+		private String content;
+		public Create() {
+			super();
+		}
+		public void setTitle(String title) {
+			this.title = title;
+		}
+		public void setContent(String content) {
+			this.content = content;
+		}
+		public Post to(User user) {
+			return Post.builder()
+					.user(user)
+					.title(title)
+					.content(title)
+					.build();
+		}
+	}
+	
+	@Validated
+	private static class Update{
+		@NotBlank(message = "title is required")
+		private String title;
+		@NotBlank(message = "content is required")
+		private String content;
+		public Update() {
+			super();
+		}
+		public void setTitle(String title) {
+			this.title = title;
+		}
+		public void setContent(String content) {
+			this.content = content;
+		}
+		public Post to(User user, Integer postId) {
+			return Post.builder()
+					.id(postId)
+					.user(user)
+					.title(title)
+					.content(content)
+					.build();
+		}
+	}
+}

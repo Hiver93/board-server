@@ -1,0 +1,35 @@
+package com.example.demo;
+
+public class BaseResponseBody {
+	String message;
+
+	public String getMessage() {
+		return message;
+	}
+
+	protected void setMessage(String message) {
+		this.message = message;
+	}
+
+	public static BaseResponseBody message(String message) {
+		var b = new BaseResponseBody();
+		b.setMessage(message);
+		return b;
+	}
+	
+	public static <T> BaseResponseBody of(String message, T data) {
+		var b = new BaseResponseBody() {
+			private T data;
+			public T getData() {
+				return data;
+			}
+			private void setData(T data) {
+				this.data = data;
+			}
+		};
+		b.setMessage(message);
+		b.setData(data);
+		return b;
+	}
+	
+}

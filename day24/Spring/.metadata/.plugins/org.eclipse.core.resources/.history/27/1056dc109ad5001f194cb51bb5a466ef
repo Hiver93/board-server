@@ -1,0 +1,30 @@
+package com.example.demo.repository;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.data.domain.Pageable;
+
+import com.example.demo.entity.Post;
+
+@Mapper
+public interface PostMapper {
+
+	public List<Post> findAllByTitleOrContent(Pageable pageable, String keyword);
+	
+	public List<Post> findAllByTitle(Pageable pageable, String keyword);
+	
+	public List<Post> findAllByContent(Pageable pageable, String keyword);
+	
+	public List<Post> findAll(Pageable pageable);
+	
+	public long countByTitleOrContent(String keyword);
+	
+	public long countByTitle(String keyword);
+	
+	public long countByContent(String keyword);
+	
+	public long count();
+	
+	public void save(Post post);
+}

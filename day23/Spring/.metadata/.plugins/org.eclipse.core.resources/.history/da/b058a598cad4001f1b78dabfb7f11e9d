@@ -1,0 +1,29 @@
+package com.example.demo.repository;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import com.example.demo.entity.Post;
+
+@Mapper
+public interface PostMapper {
+
+	@Insert("INSERT INTO post (title,content,password,view,created_at,updated_at) VALUES(#{title},#{content},#{password},#{view},now(),now()")
+	public void save(Post post);
+	
+	@Select("SELECT * FROM post WHERE title LIKE CONCAT('%',#{keyword},'%')")
+	public List<Post> findAllByTitle(String keyword);
+	
+	@Select("SELECT * FROM post WHERE title LIKE CONCAT('%',#{keyword},'%') OR content LIKE CONCAT('%',#{keyword},'%')")
+	public List<Post> findAllByTitleOrContent(String keyword);
+	
+	@Select("SELECT * FROM post WHERE content LIKE CONCAT('%',#{keyword},'%')")
+	public List<Post> findAllByContent(String keyword);
+	
+	@Select("SELECT * FROM post")
+	public List<Post> findAll();
+	
+}

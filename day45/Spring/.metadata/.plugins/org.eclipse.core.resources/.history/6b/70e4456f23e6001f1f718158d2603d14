@@ -1,0 +1,89 @@
+package com.example.demo.service;
+
+import java.util.List;
+import java.util.Set;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.domain.Post;
+import com.example.demo.error.BoardException;
+import com.example.demo.error.ErrorCode;
+import com.example.demo.repository.PostMapper;
+
+@Service
+public class PostService {
+
+	private PostMapper postMapper;
+
+	public PostService(PostMapper postMapper) {
+		super();
+		this.postMapper = postMapper;
+	}
+	
+	public void createPost(Post post) {
+		this.postMapper.save(post);
+	}
+	
+	public List<Post> getPostList(Pageable pageable, String keyword, Set<String> targets){
+		boolean conTitle = targets.contains("title");
+		boolean conContent = targets.contains("content");
+		List<Post> list;
+		if(conTitle&&conContent) {
+			list = this.postMapper.findAllByTitleOrContent(pageable, keyword);
+		}
+		else if(conTitle) {
+			list = this.postMapper.findAllByTitle(pageable, keyword);
+		}
+		else if(conContent) {
+			list = this.postMapper.findAllByContent(pageable, keyword);
+		}
+		else {
+			list = this.postMapper.findAll(pageable);
+		}
+		return list;
+	}
+	
+	public long getTotalSize(String keyword, Set<String> targets){
+		boolean conTitle = targets.contains("title");
+		boolean conContent = targets.contains("content");
+		long size;
+		if(conTitle&&conContent) {
+			size = this.postMapper.countByTitleOrContent(keyword);
+		}
+		else if(conTitle) {
+			size = this.postMapper.countByTitle(keyword);
+		}
+		else if(conContent) {
+			size = this.postMapper.countByContent(keyword);
+		}
+		else {
+			size = this.postMapper.count();
+		}
+		return size;
+	}
+	
+	public Post readPost(Integer postId) {
+		Post saved = this.postMapper.findById(postId).orElseThrow(()->{throw new BoardException(ErrorCode.POST_NOT_FOUND);});
+		saved.increaseView();
+		this.postMapper.update(saved);
+		return saved;
+	}
+	
+	public void removePost(Post post) {
+		Post saved = this.postMapper.findById(post.getId()).orElseThrow(()->{throw new BoardException(ErrorCode.POST_NOT_FOUND);});
+		if(!saved.getUser().getId().equals(post.getUser().getId())) {
+			throw new BoardException(ErrorCode.NOT_POST_OWNER);
+		}
+		this.postMapper.delete(saved);
+	}
+	
+	public void modifyPost(Post post) {
+		Post saved = this.postMapper.findById(post.getId()).orElseThrow(()->{throw new BoardException(ErrorCode.POST_NOT_FOUND);});
+		if(!saved.getUser().getId().equals(post.getUser().getId())) {
+			throw new BoardException(ErrorCode.NOT_POST_OWNER);
+		}
+		saved.updateTitle(post.getTitle());
+		saved.updateContent(post.getContent());
+	}
+}

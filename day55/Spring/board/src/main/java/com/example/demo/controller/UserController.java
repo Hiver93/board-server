@@ -1,0 +1,59 @@
+package com.example.demo.controller;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.common.BaseResBody;
+import com.example.demo.dto.UserReqDto;
+import com.example.demo.dto.UserResDto;
+import com.example.demo.service.AuthService;
+import com.example.demo.service.UserService;
+
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("/users")
+public class UserController {
+
+	private UserService userService;
+	private AuthService authService;
+	public UserController(UserService userService, AuthService authService) {
+		super();
+		this.userService = userService;
+		this.authService = authService;
+	}
+	
+	@PostMapping("/signup")
+	public ResponseEntity<BaseResBody<Void>> signup(@RequestBody @Valid UserReqDto.Signup dto){
+		this.userService.createUser(dto.to());
+		return new BaseResBody<Void>(null, "signed")
+				.toResponse(HttpStatus.CREATED);
+	}
+	
+	@PostMapping("/login")
+	public ResponseEntity<BaseResBody<Void>> login(@RequestBody @Valid UserReqDto.Login dto){
+		this.authService.setAutentication(this.userService.getUser(dto.getUsername(), dto.getPassword()));
+		return new BaseResBody<Void>(null, "loged in")
+				.toResponse(HttpStatus.OK);
+	}
+	
+	@PostMapping("/reissue")
+	public ResponseEntity<BaseResBody<Void>> reissue(){
+		this.authService.refreshAuthentication();
+		return new BaseResBody<Void>(null, "reissued")
+				.toResponse(HttpStatus.OK);
+	}
+	
+	@GetMapping("/{postId}")
+	public ResponseEntity<BaseResBody<UserResDto.Profile>> getProfile(@PathVariable(name = "postId") Integer postid){
+		var result = UserResDto.Profile.from(this.userService.getUser(postid));
+		return new BaseResBody<UserResDto.Profile>(result, "get profile")
+				.toResponse(HttpStatus.OK);
+	} 
+}

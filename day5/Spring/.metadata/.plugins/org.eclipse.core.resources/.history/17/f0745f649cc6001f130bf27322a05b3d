@@ -1,0 +1,11 @@
+package com.example.board.domain.service;
+
+import com.example.board.repository.PostRepository;
+
+public class PostService {
+	private PostRepository postRepository;
+	
+	public PostService(PostRepository postRepository) {
+		this.postRepository = postRepository;
+	}
+}

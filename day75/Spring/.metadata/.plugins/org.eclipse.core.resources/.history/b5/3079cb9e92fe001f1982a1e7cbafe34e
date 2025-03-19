@@ -1,0 +1,36 @@
+package com.example.demo;
+
+import org.springframework.stereotype.Service;
+
+import com.example.demo.domain.Post;
+import com.example.demo.domain.User;
+import com.example.demo.repository.PostLikeRepository;
+import com.example.demo.repository.PostRepository;
+
+@Service
+public class PostService {
+
+	private PostRepository postRepository;
+	private PostLikeRepository postLikeRepository;
+	public PostService(PostRepository postRepository, PostLikeRepository postLikeRepository) {
+		super();
+		this.postRepository = postRepository;
+		this.postLikeRepository = postLikeRepository;
+	}
+	
+	public Post createPost(String title, String content, String password) {
+		return this.postRepository.save(Post.builder()
+				.title(title)
+				.content(content)
+				.password(password)
+				.build());
+	}
+	
+	public Post createPost(String title, String content, User user) {
+		return this.postRepository.save(Post.builder()
+				.title(title)
+				.content(content)
+				.user(user)
+				.build());
+	}
+}

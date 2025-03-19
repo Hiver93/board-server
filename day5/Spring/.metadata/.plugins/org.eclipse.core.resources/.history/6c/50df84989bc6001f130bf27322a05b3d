@@ -1,0 +1,7 @@
+package com.example.board.domain;
+
+public class Post {
+	private long id;
+	private String title;
+	private String content;
+}

@@ -1,0 +1,62 @@
+package com.example.demo.dto;
+
+import com.example.demo.domain.Post;
+import com.example.demo.domain.User;
+
+public class PostReqDto {
+
+	public static class Create{
+		private String tltle;
+		private String content;
+		public Create() {
+			super();
+		}
+		public String getTltle() {
+			return tltle;
+		}
+		public void setTltle(String tltle) {
+			this.tltle = tltle;
+		}
+		public String getContent() {
+			return content;
+		}
+		public void setContent(String content) {
+			this.content = content;
+		}
+		public Post to(Integer userId) {
+			return Post.builder()
+					.title(tltle)
+					.content(content)
+					.user(User.builder().id(userId).build())
+					.build();
+		}
+	}
+	
+	public static class Update{
+		private String title;
+		private String content;
+		public Update() {
+			super();
+		}
+		public String getTitle() {
+			return title;
+		}
+		public void setTitle(String title) {
+			this.title = title;
+		}
+		public String getContent() {
+			return content;
+		}
+		public void setContent(String content) {
+			this.content = content;
+		}
+		public Post to(Integer userId, Integer postId) {
+			return Post.builder()
+					.title(title)
+					.content(content)
+					.id(postId)
+					.user(User.builder().id(userId).build())
+					.build();
+		}
+	}
+}

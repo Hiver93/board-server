@@ -1,0 +1,18 @@
+package com.example.demo.service;
+
+import com.example.demo.domain.Post;
+import com.example.demo.repository.PostRepository;
+
+public class PostService {
+
+	private PostRepository postRepository;
+
+	public PostService(PostRepository postRepository) {
+		super();
+		this.postRepository = postRepository;
+	}
+	
+	public void createPost(Post post) {
+		this.postRepository.save(post);
+	}
+}

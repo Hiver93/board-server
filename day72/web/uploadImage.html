@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>upload image</title>
+</head>
+<body>
+    <form action="/save" method="post" enctype="multipart/form-data">
+        <input id="file" type="file" name="image">
+        <button onclick="uploadBtn(event)" type="submit">업로드</button>
+    </form>
+
+    <script type="module">
+        import {uploadImage} from './api.js'
+        function uploadBtn(event){
+            event.preventDefault()
+            const file = document.getElementById('file').files[0]
+            uploadImage(file)
+        }
+
+        window.uploadBtn = uploadBtn
+    </script>
+</body>
+
+
+</html>

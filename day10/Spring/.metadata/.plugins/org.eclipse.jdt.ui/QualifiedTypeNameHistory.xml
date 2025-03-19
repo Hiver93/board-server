@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="jakarta.persistence.Id"/>
+    <fullyQualifiedTypeName name="jakarta.persistence.GeneratedValue"/>
+    <fullyQualifiedTypeName name="org.springframework.data.annotation.CreatedDate"/>
+    <fullyQualifiedTypeName name="org.springframework.data.annotation.LastModifiedDate"/>
+    <fullyQualifiedTypeName name="org.springframework.data.jpa.repository.config.EnableJpaAuditing"/>
+    <fullyQualifiedTypeName name="jakarta.persistence.EntityListeners"/>
+    <fullyQualifiedTypeName name="org.springframework.data.jpa.domain.support.AuditingEntityListener"/>
+    <fullyQualifiedTypeName name="org.springframework.data.jpa.repository.JpaRepository"/>
+    <fullyQualifiedTypeName name="org.springframework.data.domain.Page"/>
+    <fullyQualifiedTypeName name="jakarta.persistence.PostRemove"/>
+    <fullyQualifiedTypeName name="com.example.demo.board.repository.PostRepository"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestMapping"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.CrossOrigin"/>
+    <fullyQualifiedTypeName name="com.example.demo.board.service.PostService"/>
+    <fullyQualifiedTypeName name="com.example.demo.board.entity.Post"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="org.springframework.data.domain.Pageable"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestParam"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.DeleteMapping"/>
+    <fullyQualifiedTypeName name="com.example.demo.board.dto.PostRequestDto.Delete"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PathVariable"/>
+    <fullyQualifiedTypeName name="com.example.demo.board.dto.PostRequestDto"/>
+    <fullyQualifiedTypeName name="com.example.demo.board.dto.PostRequestDto.Post"/>
+    <fullyQualifiedTypeName name="com.example.demo.board.dto.ResponseDto"/>
+    <fullyQualifiedTypeName name="org.springframework.format.annotation.DateTimeFormat"/>
+    <fullyQualifiedTypeName name="java.time.format.DateTimeFormatter"/>
+    <fullyQualifiedTypeName name="java.util.stream.Collectors"/>
+</qualifiedTypeNameHistroy>

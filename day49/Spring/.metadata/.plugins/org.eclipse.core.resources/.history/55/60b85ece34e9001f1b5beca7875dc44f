@@ -1,0 +1,20 @@
+package com.example.demo.error;
+
+import org.springframework.http.HttpStatus;
+
+public enum ErrorCode {
+
+	POST_NOT_FOUND(HttpStatus.NOT_FOUND, "post not found"),
+	NOT_POST_OWNER(HttpStatus.FORBIDDEN, "user is not the owner of this post"),
+	
+	INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "check usernaem or password"),
+	AUTHENTICATION_REQUIRED(HttpStatus.UNAUTHORIZED, "login please"),
+	INVALID_JWT(HttpStatus.UNAUTHORIZED, "invalid jwt"),
+	EXPIRED_JWT(HttpStatus.UNAUTHORIZED, "expired jwt"),
+	
+	USERNAME_CONFLICT(HttpStatus.CONFLICT, "username conflict"),
+	USER_NOT_FOUND(HttpStatus.NOT_FOUND, "user not found"),
+	
+	COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "comment not found");
+	
+}

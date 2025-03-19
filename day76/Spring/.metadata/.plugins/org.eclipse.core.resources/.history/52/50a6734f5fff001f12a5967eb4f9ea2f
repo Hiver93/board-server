@@ -1,0 +1,11 @@
+package com.example.demo.facade;
+
+import org.springframework.stereotype.Service;
+
+import com.example.demo.service.PostService;
+
+@Service
+public class PostFacade {
+
+	private PostService postService;
+}

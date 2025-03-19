@@ -1,0 +1,11 @@
+package com.example.demo.service;
+
+import java.util.HashMap;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class FileService {
+
+	private Map<Integer, byte[]> map = new HashMap<>();
+}

@@ -1,0 +1,6 @@
+package com.example.demo.vo;
+
+public class BaseResBody {
+	private Object data;
+	private String message;
+}

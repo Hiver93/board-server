@@ -1,0 +1,19 @@
+package com.example.demo.dto;
+
+public class CommentReqDto {
+
+	public static class Create{
+		private String content;
+		private Integer postId;
+		public Create() {
+			super();
+		}
+		public void setContent(String content) {
+			this.content = content;
+		}
+		public void setPostId(Integer postId) {
+			this.postId = postId;
+		}
+		
+	}
+}

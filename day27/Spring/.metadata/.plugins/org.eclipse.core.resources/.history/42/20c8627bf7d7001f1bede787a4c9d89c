@@ -1,0 +1,33 @@
+package com.example.demo.vo;
+
+import org.springframework.http.ResponseEntity;
+
+public class BaseResBody {
+	private Object data;
+	private String message;
+	private BaseResBody(Object data, String message) {
+		super();
+		this.data = data;
+		this.message = message;
+	}
+	private BaseResBody(String message) {
+		super();
+		this.message = message;
+	}
+	public Object getData() {
+		return data;
+	}
+	public void setData(Object data) {
+		this.data = data;
+	}
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	
+	public ResponseEntity<BaseResBody> buildResponseEntity(Object Data, String message){
+		
+	}
+}

@@ -1,0 +1,42 @@
+package com.example.demo.dto;
+
+import java.time.format.DateTimeFormatter;
+
+import com.example.demo.domain.Comment;
+import com.example.demo.domain.User;
+
+public class PostResDto {
+
+	public static record Detail(
+			Integer id,
+			String title,
+			String content,
+			Integer view,
+			Integer comments,
+			Integer likes,
+			String imageName,
+			Integer userId,
+			String nickname,
+			String createdAt,
+			String updatedAt,
+			List<CommentItem> commentList
+			) {
+		
+		private static record CommentItem(
+				Integer id,
+				String username,
+				Integer userId,
+				String nickname,
+				String createdAt
+				) {
+			private static CommentItem from(Comment comment) {
+				User user = comment.getUser();
+				if(user.isDeleted()) {
+					user = User.builder().id(null).nickname("anonymous").build();
+				}
+				return new CommentItem(comment.getId(), comment.getContent(),user.getId(), user.getNickname(),
+						comment.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+			}
+		}
+	}
+}

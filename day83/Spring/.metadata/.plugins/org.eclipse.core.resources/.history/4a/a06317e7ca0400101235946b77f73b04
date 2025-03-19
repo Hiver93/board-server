@@ -1,0 +1,10 @@
+package com.example.demo.util;
+
+public class FileUtil {
+	
+	private static final String DIR_PATH = "src/main/resources/static/images";
+
+	public static void saveFile(String fileName, byte[] bytes) {
+		
+	}
+}

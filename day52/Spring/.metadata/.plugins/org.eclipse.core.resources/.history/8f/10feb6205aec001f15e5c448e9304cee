@@ -1,0 +1,16 @@
+package com.example.demo;
+
+import org.junit.jupiter.api.Test;
+
+import com.example.demo.common.SuccessfulBody;
+
+public class BodyTest {
+
+	@Test
+	public void test() {
+		SuccessfulBody<Object> body;
+		Object a = new Object();
+		body = new SuccessfulBody<Void>(a);
+		
+	}
+}

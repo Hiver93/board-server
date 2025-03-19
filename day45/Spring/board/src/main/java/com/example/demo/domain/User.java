@@ -1,0 +1,69 @@
+package com.example.demo.domain;
+
+import java.util.List;
+
+public class User {
+	
+	private Integer id;
+	private String username;
+	private String password;
+	private String nickname;
+	private List<Post> postList;
+	public User(Integer id, String username, String password, String nickname, List<Post> postList) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.nickname = nickname;
+		this.postList = postList;
+	}
+	public User() {
+		super();
+	}
+	public Integer getId() {
+		return id;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void updateNickname(String nickname) {
+		this.nickname = nickname;
+	}
+	public List<Post> getPostList() {
+		return postList;
+	}
+	public static Builder builder() {
+		return new Builder();
+	}
+	public static class Builder{
+		private Integer id;
+		private String username;
+		private String password;
+		private String nickname;
+		public Builder id(Integer id) {
+			this.id = id;
+			return this;
+		}
+		public Builder username(String username) {
+			this.username = username;
+			return this;
+		}
+		public Builder password(String password) {
+			this.password = password;
+			return this;
+		}
+		public Builder nickname(String nickname) {
+			this.nickname = nickname;
+			return this;
+		}
+		public User build() {
+			return new User(id,username,password,nickname,null);
+		}
+	}
+}

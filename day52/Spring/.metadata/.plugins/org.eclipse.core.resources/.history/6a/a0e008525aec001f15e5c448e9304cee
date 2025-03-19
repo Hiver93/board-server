@@ -1,0 +1,24 @@
+package com.example.demo.common;
+
+public class SuccessfulBody<T>{
+	T t;
+
+	public SuccessfulBody(T t) {
+		super();
+		this.t = t;
+	}
+
+	public SuccessfulBody() {
+		super();
+	}
+	
+	
+
+}
+
+class TestBody{
+	public static void main(String[] args) {
+		SuccessfulBody<Void> body = new SuccessfulBody<>();
+		System.out.println(body.t);
+	}
+}

@@ -1,0 +1,15 @@
+package com.example.board.error;
+
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+	@ExceptionHandler(PostException.class)
+	public ResponseEntity<ErrorResponseBody> postException(PostException postException){
+		return new ResponseEntity(new ErrorResponseBody("aa"),postException.getStatusCode());
+	}
+}

@@ -1,0 +1,5 @@
+spring.application.name=board
+
+
+spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect

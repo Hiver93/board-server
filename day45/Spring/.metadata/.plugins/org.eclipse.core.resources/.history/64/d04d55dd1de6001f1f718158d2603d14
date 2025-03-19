@@ -1,0 +1,27 @@
+package com.example.demo.repository;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
+import org.springframework.data.domain.Pageable;
+
+import com.example.demo.domain.Post;
+
+@Mapper
+public interface PostMapper {
+
+	@Select("SELECT * FROM post p "
+			+ "LEFT OUTER JOIN user u ON u.id = p.user_id"
+			+ "WHERE p.title LIKE CONCAT('%',#{keyword},'%') OR p.content LIKE CONCAT('%',#{keyword},'%') "
+			+ "ORDER BY id DESC LIMIT #{pageable.pageSize} OFFSET #{pageable.offset}")
+	@Results({
+		@Result(property = "user.id", column = "u.id"),
+		@Result(property = "user.username", column = "u.username"),
+		@Result(property = "user.nickname", column = "u.nickname")
+	})
+	public List<Post> findAllByTitleOrContent(@Param("pageable") Pageable pageable, @Param("keyword") String keyword);
+}

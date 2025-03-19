@@ -1,0 +1,12 @@
+package com.example.board.day1.service;
+
+import com.example.board.day1.repository.BoardRepository;
+
+public class BoardService {
+	
+	private BoardRepository boardRepository;
+	
+	public BoardService(BoardRepository boardRepository) {
+		this.boardRepository = boardRepository;
+	}
+}

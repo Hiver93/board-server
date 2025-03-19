@@ -1,0 +1,39 @@
+package com.example.demo;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.example.demo.domain.User;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.service.UserService;
+
+import jakarta.transaction.Transactional;
+
+@SpringBootTest
+public class UserServiceTest {
+
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Transactional
+	@Test
+	public void test() {
+		User user = new User();
+		user.setUsername("name123456123");
+		user.setPassword("pass");
+		user.setNickname("nick");
+		User saved = this.userService.createUser(user);
+//		User saved = userRepository.save(user);
+//		userRepository.findAll().stream().forEach(System.out::println);
+		User saved2 = userRepository.findById(saved.getId()).get();
+//		User finded = this.userRepository.findById(saved.getId()).orElseThrow(()->{throw new BoardException(ErrorCode.USER_NOT_FOUND);});
+		assertThat(saved).isEqualTo(saved2);
+		
+	}
+}

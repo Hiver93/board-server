@@ -1,0 +1,57 @@
+package com.example.demo.util;
+
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import com.example.demo.domain.User;
+import com.example.demo.error.BoardException;
+import com.example.demo.error.ErrorCode;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+@Component
+public class AuthenticationUtil {
+
+	private JwtUtil jwtUtil;
+
+	public AuthenticationUtil(JwtUtil jwtUtil) {
+		super();
+		this.jwtUtil = jwtUtil;
+	}
+	
+	public void setAuthentication(User user) {
+		String token = this.jwtUtil.generateToken(user.getId());
+		String rToken = this.jwtUtil.generateTokenR(user.getId());
+		HttpServletResponse response = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getResponse();
+		response.setHeader("Authorization", token);
+		Cookie c = new Cookie("refresh", rToken);
+		c.setSecure(true);
+		c.setHttpOnly(true);
+		c.setMaxAge(100000);
+		response.addCookie(c);
+	}
+	
+	public Integer authenticate() {
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+		
+		String token = request.getHeader("Authorization");
+		try {
+			return this.jwtUtil.getId(token);
+		}catch(BoardException e) {
+			if(e.getErrorCode().equals(ErrorCode.EXPIRED_JWT)) {
+				for(Cookie c : request.getCookies()) {
+					if(c.getName().equals("refresh")) {
+						System.out.println(c.getValue());
+					}
+				}
+				return this.jwtUtil.getId(token);
+			}
+			else {
+				throw e;
+			}
+		}
+	}
+}

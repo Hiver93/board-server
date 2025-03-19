@@ -1,0 +1,18 @@
+package com.example.demo;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+
+import com.example.demo.common.SuccessfulBody;
+
+public class BodyTest {
+
+	@Test
+	public void test() {
+		
+		// 이게 불가능해야함
+		var a = new SuccessfulBody<Void>("message");
+		a.toResponse(HttpStatus.OK);
+		
+	}
+}

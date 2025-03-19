@@ -1,0 +1,18 @@
+package com.example.demo.config;
+
+import java.util.concurrent.Executor;
+
+import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
+import org.springframework.scheduling.annotation.AsyncConfigurer;
+
+public class AsyncConfig implements AsyncConfigurer{
+	@Override
+	public Executor getAsyncExecutor() {
+		return null;
+	}
+
+	@Override
+	public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+		return null;
+	}
+}

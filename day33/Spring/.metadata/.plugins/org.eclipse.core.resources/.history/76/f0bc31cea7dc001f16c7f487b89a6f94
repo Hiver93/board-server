@@ -1,0 +1,20 @@
+package com.example.demo.utill;
+
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+@Component
+public class AuthenticationUtil {
+
+	public Integer getUserId(HttpServletRequest request) {
+		Integer userId = (Integer)request.getSession().getAttribute("userId");
+		return userId;
+	}
+	
+	public void setUserId(HttpServletRequest request, Integer userId) {
+		request.setAttribute("userId", userId);
+	}
+}

@@ -1,0 +1,39 @@
+package com.example.demo.error;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
+
+import com.example.demo.common.BaseResBody;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+	@ExceptionHandler(BoardException.class)
+	public ResponseEntity<BaseResBody<Void>> boardException(BoardException ex){
+		return new BaseResBody<Void>(null, ex.getMessage())
+				.toResponse(ex.getErrorCode().getStatus());
+	}
+	
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<BaseResBody<Void>> methodArgumentNotValidException(MethodArgumentNotValidException ex){
+		return new BaseResBody<Void>(null, ex.getFieldError().getDefaultMessage())
+				.toResponse(HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(NoResourceFoundException.class)
+	public ResponseEntity<BaseResBody<Void>> noResourceFoundException(NoResourceFoundException ex){
+		return new BaseResBody<Void>(null, "check url")
+				.toResponse(HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity<BaseResBody<Void>> httpMessageNotReadableException(HttpMessageNotReadableException ex){
+		return new BaseResBody<Void>(null, "invalid request body. check format")
+				.toResponse(HttpStatus.BAD_REQUEST);
+	}
+}

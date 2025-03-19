@@ -1,0 +1,33 @@
+package com.example.demo;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+
+import com.example.demo.domain.User;
+import com.example.demo.error.BoardException;
+import com.example.demo.error.ErrorCode;
+import com.example.demo.repository.UserRepository;
+
+import jakarta.transaction.Transactional;
+
+@WebMvcTest
+public class UserServiceTest {
+
+	@Autowired
+	private UserRepository userRepository;
+
+	
+	@Transactional
+	@Test
+	public void test() {
+		User user = new User();
+		user.setUsername("name");
+		user.setPassword("pass");
+		user.setNickname("nick");
+		User saved = this.userRepository.save(user);
+		User finded = this.userRepository.findById(saved.getId()).orElseThrow(()->{throw new BoardException(ErrorCode.USER_NOT_FOUND);});
+		System.out.println(finded.getId());
+		
+	}
+}

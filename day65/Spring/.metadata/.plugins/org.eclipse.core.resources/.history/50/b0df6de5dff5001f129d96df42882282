@@ -1,0 +1,51 @@
+package com.example.demo.domain;
+
+import java.time.LocalDateTime;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+
+@Entity(name = "users")
+@EntityListeners(value = AuditingEntityListener.class)
+public class User {
+
+	private Integer id;
+	private String username;
+	private String password;
+	private String nickname;
+	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
+	public User(Integer id, String username, String password, String nickname) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.nickname = nickname;
+	}
+	public User() {
+		super();
+	}
+	public final Integer getId() {
+		return id;
+	}
+	public final String getUsername() {
+		return username;
+	}
+	public final String getPassword() {
+		return password;
+	}
+	public final String getNickname() {
+		return nickname;
+	}
+	public final LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+	public final LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+	public void updateNickname(String nickname) {
+		
+	}
+}

@@ -1,0 +1,6 @@
+package com.example.demo.common;
+
+public class BaseResBody<T> {
+
+	private final T data;
+}

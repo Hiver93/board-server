@@ -1,0 +1,32 @@
+package com.example.demo.service;
+
+import org.springframework.stereotype.Service;
+
+import com.example.demo.domain.Post;
+import com.example.demo.error.BoardException;
+import com.example.demo.error.ErrorCode;
+import com.example.demo.repository.PostLikeRepository;
+import com.example.demo.repository.PostRepository;
+
+@Service
+public class PostService {
+
+	private PostRepository postRepository;
+	private PostLikeRepository postLikeRepository;
+	public PostService(PostRepository postRepository, PostLikeRepository postLikeRepository) {
+		super();
+		this.postRepository = postRepository;
+		this.postLikeRepository = postLikeRepository;
+	}
+	
+	public void createPost(String title, String content, String password) {
+		if(password.isBlank()) {
+			throw new BoardException(ErrorCode.PASSWORD_REQUIRED);
+		}
+		this.postRepository.save(Post.builder()
+				.title(title)
+				.content(content)
+				.password(password)
+				.build());
+	}
+}

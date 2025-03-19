@@ -1,0 +1,79 @@
+package com.example.demo;
+
+import java.io.IOException;
+import java.util.Set;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.example.demo.domain.Image;
+import com.example.demo.domain.Post;
+import com.example.demo.domain.User;
+import com.example.demo.dto.PostReqDto;
+import com.example.demo.dto.PostResDto.Detail;
+import com.example.demo.dto.PostResDto.PostList;
+import com.example.demo.service.AuthService;
+import com.example.demo.service.ImageService;
+import com.example.demo.service.PostService;
+
+@Service
+public class PostFacade {
+
+	private PostService postService;
+	private AuthService authService;
+	private ImageService imageService;
+	public PostFacade(PostService postService, AuthService authService, ImageService imageService) {
+		super();
+		this.postService = postService;
+		this.authService = authService;
+		this.imageService = imageService;
+	}
+	
+	@Transactional
+	public void createPost(PostReqDto.Create dto, MultipartFile image) throws IOException {
+		User user = this.authService.getAuthentication();
+		Post post;
+		if(user == null) {
+			post = this.postService.createPost(dto.getTitle(), dto.getContent(), dto.getPassword());
+		}
+		else {
+			this.authService.authenticate();
+			post = this.postService.createPost(dto.getTitle(), dto.getContent(), user);
+		}
+		
+		Image saved = this.imageService.saveImage(image);
+		post.setImage(Image.builder()
+				.originalFileName(saved.getOriginalFileName())
+				.fileName(saved.getFileName())
+				.post(post)
+				.build());
+	}
+	
+	public PostList getPostList(Pageable pageable, String keyword, Set<String> target) {
+		return PostList.from(this.postService.getTotalSize(keyword, target), this.postService.getPostList(pageable, keyword, target));
+	}
+	
+	public Detail readPost(Integer postId) {
+		Detail detail = Detail.from(this.postService.getPost(postId));
+		this.postService.increaseView(postId);
+		return detail;
+	}
+	
+	@Transactional
+	public void removePost(Integer postId, PostReqDto.Delete dto) {
+		Post saved = this.postService.getPost(postId);
+		if(saved.isAnonymousPost()) {
+			this.postService.removePost(postId, dto.getPassword());
+		}
+		else {
+			this.authService.authenticate();
+			this.postService.removePost(postId, this.authService.getAuthentication());
+		}
+	}
+	
+	publi
+	
+	
+}

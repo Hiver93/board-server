@@ -1,0 +1,24 @@
+package com.example.demo.error;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.example.demo.body.BaseResBody;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+	public ResponseEntity<BaseResBody> postException(PostException postException){
+		return BaseResBody.buildResponseEntity(postException.getErrorCode().getStatus(), postException.getErrorCode().getMessage());
+	}
+	
+	public ResponseEntity<BaseResBody> methodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException){
+		return BaseResBody.buildResponseEntity(HttpStatus.BAD_REQUEST, methodArgumentNotValidException.getFieldError().getDefaultMessage());
+	}
+	
+	public ResponseEntity<BaseResBody> unknownException(Exception exception){
+		return BaseResBody.buildResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, "unknown exception. contact admin");
+	}
+}

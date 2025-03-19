@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move element &apos;PostRepository.java&apos; to &apos;board/src/main/java/com.example.board.repository&apos;&#x0D;&#x0A;- Original project: &apos;board&apos;&#x0D;&#x0A;- Destination element: &apos;board/src/main/java/com.example.board.repository&apos;&#x0D;&#x0A;- Original element: &apos;com.example.board.PostRepository.java&apos;&#x0D;&#x0A;- Update references to refactored element" description="Move compilation unit" destination="/src\/main\/java=/gradle_scope=/main=/=/gradle_used_by_scope=/main,test=/&lt;com.example.board.repository" element1="/src\/main\/java=/gradle_scope=/main=/=/gradle_used_by_scope=/main,test=/&lt;com.example.board{PostRepository.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.move" patterns="*" policy="org.eclipse.jdt.ui.moveResources" qualified="false" references="true" stamp="1735318304177" units="1" version="1.0"/>
+</session>

@@ -1,0 +1,18 @@
+package com.example.demo.service;
+
+import org.springframework.stereotype.Service;
+
+import com.example.demo.repository.ImageRepository;
+
+@Service
+public class ImageService {
+
+	private final String DIR_PATH = "src/main/resources/static/images/";
+	private ImageRepository imageRepository;
+
+	public ImageService(ImageRepository imageRepository) {
+		super();
+		this.imageRepository = imageRepository;
+	}
+	
+}

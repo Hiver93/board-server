@@ -1,0 +1,39 @@
+package com.example.demo.error;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+
+import com.example.demo.common.BaseResBody;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+	@ExceptionHandler(BoardException.class)
+	public ResponseEntity<BaseResBody<Void>> handleException(BoardException ex){
+		return new BaseResBody<Void>(null, ex.getMessage())
+				.toResponse(ex.getErrorCode().getStatus());
+	}
+	
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<BaseResBody<Void>> handleException(MethodArgumentNotValidException ex){
+		return new BaseResBody<Void>(null, ex.getFieldError().getDefaultMessage())
+				.toResponse(HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	public ResponseEntity<BaseResBody<Void>> handleException(MethodArgumentTypeMismatchException ex){
+		return new BaseResBody<Void>(null, ex.getPropertyName() + " require " + ex.getRequiredType().getSimpleName())
+				.toResponse(HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(MissingServletRequestParameterException.class)
+	public ResponseEntity<BaseResBody<Void>> handleException(MissingServletRequestParameterException ex){
+		return new BaseResBody<Void>(null, ex.getPropertyName() + " require " + ex.getRequiredType().getSimpleName())
+				.toResponse(HttpStatus.BAD_REQUEST);
+	}
+}

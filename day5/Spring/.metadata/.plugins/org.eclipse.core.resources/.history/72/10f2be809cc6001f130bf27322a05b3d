@@ -1,0 +1,14 @@
+package com.example.board.domain.service;
+
+import org.springframework.stereotype.Service;
+
+import com.example.board.repository.PostRepository;
+
+@Service
+public class PostService {
+	private PostRepository postRepository;
+	
+	public PostService(PostRepository postRepository) {
+		this.postRepository = postRepository;
+	}
+}

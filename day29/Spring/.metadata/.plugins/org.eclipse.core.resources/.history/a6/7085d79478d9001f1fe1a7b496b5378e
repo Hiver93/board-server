@@ -1,0 +1,56 @@
+package com.example.demo.controller;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.BaseResBody;
+import com.example.demo.dto.UserReqDto;
+import com.example.demo.dto.UserResDto;
+import com.example.demo.entity.User;
+import com.example.demo.service.UserService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("/users")
+@CrossOrigin(origins = {"http://localhost:5500","http://127.0.0.1:5500"}, allowCredentials = "true", methods = {RequestMethod.POST,RequestMethod.GET})
+public class UserController {
+
+	private UserService userService;
+
+	public UserController(UserService userService) {
+		super();
+		this.userService = userService;
+	}
+	
+	@PostMapping("/signup")
+	public ResponseEntity<BaseResBody> signup(@RequestBody @Valid UserReqDto.Signup dto){
+		this.userService.createUser(dto.toEntity());
+		return BaseResBody.buildResponseEntity(HttpStatus.CREATED, "signed up");
+	}
+	
+	@PostMapping("/login")
+	public ResponseEntity<BaseResBody> login(@RequestBody @Valid UserReqDto.Login dto, HttpServletRequest request){
+		User user = this.userService.getUesr(dto.toEntity());
+		UserResDto.Login result = UserResDto.Login.fromEntity(user);
+		System.out.println(user.getId());
+		request.getSession().setAttribute("userId", user.getId());
+		return BaseResBody.buildResponseEntity(HttpStatus.OK, result, "loged in");
+	}
+	
+	@GetMapping("/status")
+	public ResponseEntity<BaseResBody> getStatus(HttpServletRequest request){
+		System.out.println(request.getSession().getAttribute("userId"));
+		User user = this.userService.getUser((Integer)request.getSession().getAttribute("userId"));
+		UserResDto.Status result = UserResDto.Status.fromEntity(user);
+		return BaseResBody.buildResponseEntity(HttpStatus.OK, result, "get status");
+	}
+}

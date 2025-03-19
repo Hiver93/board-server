@@ -1,0 +1,21 @@
+package com.example.demo.error;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.example.demo.common.BaseResBody;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+	Logger log = LoggerFactory.getLogger(getClass());
+	
+	@ExceptionHandler(BoardException.class)
+	public ResponseEntity<BaseResBody<Void>> handleException(BoardException ex){
+		return new BaseResBody(null, ex.getMessage())
+				.toResponse(ex.getStatus());
+	}
+}

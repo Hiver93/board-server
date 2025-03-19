@@ -1,0 +1,14 @@
+package com.example.demo.domain;
+
+import org.hibernate.annotations.SQLDelete;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+
+@Entity
+@EntityListeners(value = AuditingEntityListener.class)
+@SQLDelete(sql = "UPDATE user SET deleted_at = now() where id = ?")
+public class User {
+
+}

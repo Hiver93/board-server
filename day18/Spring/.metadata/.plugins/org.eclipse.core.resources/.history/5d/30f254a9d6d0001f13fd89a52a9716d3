@@ -1,0 +1,16 @@
+package com.example.board.entity;
+
+import jakarta.persistence.Entity;
+
+import org.springframework.data.jpa.
+
+import jakarta.persistence.Entity;
+in.support.AuditingEntityListener;
+
+import jakarta.persistence.EntityListeners;
+
+@Entity
+@EntityListeners(value = AuditingEntityListener.class)
+public class Post {
+
+}

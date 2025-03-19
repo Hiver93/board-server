@@ -1,0 +1,15 @@
+package com.example.demo.dto;
+
+public class UserResDto {
+
+	public static record Login(
+			String uuid
+			){}
+	
+	public static record Status(
+			String username,
+			String nickname
+			) {
+		
+	}
+}

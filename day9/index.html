@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<body lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시판 목록</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        .container {
+            width: 80%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        td {
+            background-color: #fafafa;
+        }
+        .no-data {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>게시판 목록</h1>
+
+    <table id="boardTable">
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>날짜</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 게시글 목록이 여기에 출력됩니다 -->
+        </tbody>
+    </table>
+
+    <div id="noData" class="no-data" style="display: none;">
+        게시글이 없습니다.
+    </div>
+</div>
+<body>
+    <a id="prevPage">prev</a>
+    <a id="nextPage">next</a>
+</body>
+<a href="http://localhost:5500/postPost.html">글 동록</a>
+
+<script>
+    
+    const curPage = new URLSearchParams(window.location.search).get("page") != null ? new Number(new URLSearchParams(window.location.search).get("page")) : 0
+    const prevPage = curPage < 1 ? curPage : curPage-1;
+    const nextPage = curPage+1;
+
+    document.getElementById('prevPage').href='http://localhost:5500?page=' + "" + prevPage + '&size=3'
+    document.getElementById('nextPage').href='http://localhost:5500?page=' + "" + nextPage + '&size=3'
+
+
+
+    // 서버에서 게시글 목록을 가져오는 함수
+    async function loadBoardList() {
+        try {
+            const response = await fetch('http://localhost:8080/posts?page='+ curPage + '&size=3&sort=createdAt,desc'); // 서버 URL (게시글 목록 API)
+            if (response.ok) {
+                const data = await response.json();
+                const boardTable = document.getElementById('boardTable').getElementsByTagName('tbody')[0];
+                const noDataMessage = document.getElementById('noData');
+                
+                // 테이블에 데이터 추가
+                if (data.length > 0) {
+                    noDataMessage.style.display = 'none'; // 데이터가 있으면 "게시글이 없습니다." 메시지 숨김
+                    data.forEach((board, index) => {
+                        const row = boardTable.insertRow();
+                        row.innerHTML = `
+                            <td>${board.id}</td>
+                            <td><a href="http://localhost:5500/detail.html?postId=${board.id}">${board.title}</a></td>
+                            <td>${board.createdAt}</td>
+                            <td><button onclick="deletePost(${board.id})">삭제</button></td>\
+                        `;
+                    });
+                } else {
+                    noDataMessage.style.display = 'block'; // 데이터가 없으면 "게시글이 없습니다." 메시지 표시
+                }
+            } else {
+                console.error('서버 오류:', response.statusText);
+            }
+        } catch (error) {
+            console.error('데이터를 가져오는 데 오류가 발생했습니다:', error);
+        }
+    }
+
+    function deletePost(postId) {
+            // const postId = document.getElementById('postId').value; // 입력된 post ID 가져오기
+            const postPw = prompt("비밀번호 입력")
+            if (!postId) {
+                alert("삭제할 Post ID를 입력하세요.");
+                return;
+            }
+
+            const data = {
+                "password": postPw
+            }
+
+            // DELETE 요청을 보낼 URL (여기서는 /posts/:id 형태로 가정)
+            const url = `http://localhost:8080/posts/${postId}`;
+
+            // DELETE 요청을 보냄
+            fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body:JSON.stringify(data)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert(`Post ID ${postId}가 삭제되었습니다.`);
+                } else {
+                    alert("Post 삭제 실패. 서버 오류가 발생했습니다.");
+                }
+            })
+            .catch(error => {
+                console.error("오류:", error);
+                alert("네트워크 오류가 발생했습니다.");
+            });
+        }
+
+    // 페이지 로딩 시 게시글 목록 불러오기
+    window.onload = loadBoardList;
+</script>
+
+</body>
+</html>

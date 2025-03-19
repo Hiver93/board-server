@@ -1,0 +1,23 @@
+package com.example.demo.service;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Map;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+@Service
+public class ImageService {
+
+	private final String DIR_PATH = "src/main/resources/static/images/";
+	private Map<Integer, String> pathMap;
+	private int idx = 0;
+	
+	public void saveImage(MultipartFile file) {
+		String fileName = file.getOriginalFilename();
+		String filePath = DIR_PATH + fileName;
+		
+		Path path = Paths.get(filePath);
+	}
+}

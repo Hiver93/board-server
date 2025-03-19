@@ -1,0 +1,48 @@
+package com.example.demo.controller;
+
+import java.util.Set;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.common.BaseBody;
+import com.example.demo.dto.PostReqDto;
+import com.example.demo.dto.PostResDto;
+import com.example.demo.service.AuthService;
+import com.example.demo.service.PostService;
+
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("/posts")
+public class PostController {
+
+	private PostService postService;
+	private AuthService authService;
+	public PostController(PostService postService, AuthService authService) {
+		super();
+		this.postService = postService;
+		this.authService = authService;
+	}
+	
+	@PostMapping
+	public ResponseEntity<BaseBody<Void>> postPost(@RequestBody @Valid PostReqDto.Create dto){
+		this.postService.createPost(dto.to(this.authService.authenticate()));
+		return new BaseBody("posted")
+				.toResponse(HttpStatus.CREATED);
+	}
+	
+	@GetMapping
+	public ResponseEntity<BaseBody<PostResDto.PostList>> getPostList(Pageable pageable, @RequestParam(name = "keyword") String keyword, @RequestParam(name = "target") Set<String> targets){
+		var result = PostResDto.PostList.from(this.postService.getTotalSize(keyword, targets), this.postService.getPostList(pageable, keyword, targets));
+		return new BaseBody(result, "posted")
+				.toResponse(HttpStatus.CREATED);
+	}
+}

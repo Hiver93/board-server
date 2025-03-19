@@ -1,0 +1,24 @@
+package com.example.demo.service;
+
+import org.springframework.stereotype.Service;
+
+import com.example.demo.domain.PostLike;
+import com.example.demo.domain.User;
+import com.example.demo.error.BoardException;
+import com.example.demo.error.ErrorCode;
+import com.example.demo.repository.PostLikeRepository;
+
+@Service
+public class PostLIkeService {
+
+	private PostLikeRepository postLikeRepository;
+
+	public PostLIkeService(PostLikeRepository postLikeRepository) {
+		super();
+		this.postLikeRepository = postLikeRepository;
+	}
+	
+	public void removePostLike(Integer postLikeId, User user) {
+		PostLike saved = this.postLikeRepository.findById(postLikeId).orElseThrow(()->{throw new BoardException(ErrorCode.POST_LIKE_NOT_FOUND);});
+	}
+}

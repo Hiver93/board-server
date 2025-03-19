@@ -1,0 +1,10 @@
+package com.example.demo.dto;
+
+public record CommentResDto(
+		Integer id,
+		String content,
+		Integer userId,
+		String nickname
+		) {
+
+}

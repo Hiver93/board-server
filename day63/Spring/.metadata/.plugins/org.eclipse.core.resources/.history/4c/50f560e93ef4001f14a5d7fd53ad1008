@@ -1,0 +1,29 @@
+package com.example.demo.error;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.example.demo.common.BaseResBody;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+	Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+	
+	@ExceptionHandler(BoardException.class)
+	public ResponseEntity<BaseResBody<Void>> boardException(BoardException ex){
+		return new BaseResBody<Void>(null, ex.getMessage())
+				.toResponse(ex.getErrorCode().getStatus());
+	}
+	
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<BaseResBody<Void>> methodArgumentNotValidException(MethodArgumentNotValidException ex){
+		return new BaseResBody<Void>(null, ex.getFieldError())
+				.toResponse(HttpStatus.BAD_REQUEST);
+	}
+}

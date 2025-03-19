@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시판 글 등록</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        .container {
+            width: 80%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            border: 1px solid #ddd;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>게시판 글 등록</h1>
+
+    <form>
+        <label>제목</label>
+        <input type="text" id="title" name="title" required>
+
+        <label>내용</label>
+        <textarea id="content" name="content" rows="5" required></textarea>
+
+        <button onclick="post(event)">등록</button>
+    </form>
+
+</div>
+<script type="module">
+    import {postPost, reissue} from './api.js'
+
+    function post(event){
+        event.preventDefault();
+        const title = document.getElementById('title').value
+        const content = document.getElementById('content').value
+
+        const postData = {
+            title: title,
+            content: content
+        }
+        
+        postPost(postData, localStorage.getItem('jwt'))
+        .then(({status, body})=>{
+            if(status == 201){
+                alert(body.message)
+                window.location.href="http://localhost:5500/index.html"
+            }
+            else if(body.message == "expired jwt"){
+
+                reissue()
+                .then(()=>{
+                    postPost(postData, localStorage.getItem('jwt'))
+                    .then(({status, body})=>{
+                        if(status == 201){
+                            alert(body.message)
+                            window.location.href="http://localhost:5500/index.html"
+                        }
+                        else {
+                            alert(body.message)
+                        }
+
+                    })
+                })
+            }
+            else{
+                alert(body.message)
+            }
+
+        })
+        
+    }
+    window.post = post
+</script>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+package com.example.demo.repository;
+
+import java.util.Optional;
+
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import com.example.demo.domain.User;
+
+@Mapper
+public interface UserMapper {
+	
+	@Insert("INSERT INTO users(username, password, nickname) VALUES(#{user.username},#{user.password},#{user.nickname})")
+
+	@Select("SELECT * FROM users WHERE username = #{username}")
+	public Optional<User> findByUsername(@Param("username")String username);
+	
+	@Select("SELECT * FROM users WHERE username = #{username} AND passworrd = #{password}")
+	public Optional<User> findByUsernameAndPassword(@Param("username") String username, @Param("passwod") String password);
+}

@@ -1,0 +1,10 @@
+package com.example.demo.dto;
+
+public class UserReqDto {
+
+	public static class Signup{
+		private String username;
+		private String password;
+		private String nickname;
+	}
+}

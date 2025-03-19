@@ -1,0 +1,53 @@
+package com.example.demo.dto;
+
+import org.springframework.validation.annotation.Validated;
+
+import jakarta.validation.constraints.NotBlank;
+
+public class PostReqDto {
+
+	@Validated
+	public static class Create{
+		@NotBlank(message = "title is required")
+		private String title;
+		@NotBlank(message = "title is required")
+		private String content;
+		private String password;
+		public Create() {
+			super();
+		}
+		public String getTitle() {
+			return title;
+		}
+		public void setTitle(String title) {
+			this.title = title;
+		}
+		public String getContent() {
+			return content;
+		}
+		public void setContent(String content) {
+			this.content = content;
+		}
+		public String getPassword() {
+			return password;
+		}
+		public void setPassword(String password) {
+			this.password = password;
+		}
+		
+	}
+	
+	@Validated
+	public static class Put{
+		@NotBlank(message = "title is required")
+		private String title;
+		@NotBlank(message = "title is required")
+		private String content;
+		private String password;
+	}
+	
+	@Validated
+	public static class Delete{
+		private String password;
+	}	
+}

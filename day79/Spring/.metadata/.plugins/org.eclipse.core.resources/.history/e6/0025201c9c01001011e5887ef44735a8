@@ -1,0 +1,14 @@
+package com.example.demo.service;
+
+import java.util.Set;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class ImageService {
+
+	private final String DIR_PATH = "src/main/resources/static/images/";
+	private final Set<String> ALLOWED_CONTENT = Set.of("image/png", "image/jpeg");
+	
+	
+}

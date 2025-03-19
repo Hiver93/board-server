@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<body lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post list</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        .container {
+            width: 80%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        td {
+            background-color: #fafafa;
+        }
+        .no-data {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+        }
+        #loginForm{
+            float: right;
+            display: none;
+        }
+        #greeting{
+            float: right;
+            /* display: none; */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>POST List</h1>
+    <header class="header">
+        <form id="loginForm">
+            <input type="text" id="username" name="username" placeholder="username">
+            <input type="text" id="password" name="password" placeholder="password">
+            <input onclick="loginBtn(event)" type="button" value="login">
+        </form>
+        <div id="greeting">
+            <div id="greetingMessage"></div>
+            <button onclick="logoutBtn(event)">logout</button>
+        </div>
+    </header>
+    <div id="userState">
+        <table>
+            <tr>
+                <th>nicknname</th>
+                <th id="nickname"> nick1</th>
+            </tr>
+        </table>
+    </div>
+    <table id="boardTable">
+        <thead>
+            <tr>
+                <th>num</th>
+                <th>title</th>
+                <th>posted</th>
+                <th>updated</th>
+                <th>view</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 게시글 목록이 여기에 출력됩니다 -->
+        </tbody>
+    </table>
+
+    <div id="noData" class="no-data" style="display: none;">
+        게시글이 없습니다.
+    </div>
+</div>
+</body>
+
+<script type="module">
+    import {getTotalSize, getPostList, deletePost, login, logout} from './api.js'
+   
+
+    function init(){
+        const greeting = document.getElementById('greeting')
+        const loginForm = document.getElementById('loginForm')
+        console.log(sessionStorage.getItem('nickname'))
+        if(sessionStorage.getItem("nickname") !== null) {
+            const greetingMessage = document.getElementById('greetingMessage')
+            greetingMessage.innerHTML = "welcome " + sessionStorage.getItem('nickname')
+            greeting.style.display = 'block'
+            loginForm.style.display = 'none'
+        }
+        else{
+            greeting.style.display = 'none'
+            loginForm.style.display = 'block'
+        }
+        loadBoardList();
+    }
+
+    // 서버에서 게시글 목록을 가져오는 함수
+    function loadBoardList() {
+        const table = document.getElementById('boardTable')
+        let size = table.rows.length
+        while(size != 1){
+            table.deleteRow(1)
+            size--
+        }
+
+        getTotalSize(keyword, target)
+        .then(({status, body})=>{
+            if(status == 200){
+                const totalCount = body.data;
+                const lastPage = totalCount / pageSize + (totalCount % pageSize == 0 ? 0 : 1) -1;
+                if(lastPage < curPage && curPage != 0){
+                    alert('마지막 페이지입니다.')
+                    history.back();
+                    return;
+                }
+            }
+            else{
+                alert(body.message)
+            }
+        })
+
+
+        getPostList(curPage, 3, 'createdAt', 'desc', keyword, target)
+        .then(({status, body})=>{
+            if(status == 200){
+                const data = body.data
+                const boardTable = document.getElementById('boardTable').getElementsByTagName('tbody')[0];
+                const noDataMessage = document.getElementById('noData');
+                // 테이블에 데이터 추가
+                if (data.length > 0) {
+                    noDataMessage.style.display = 'none'; // 데이터가 있으면 "게시글이 없습니다." 메시지 숨김
+                    data.forEach((board, index) => {
+                        const row = boardTable.insertRow();
+                        row.innerHTML = `
+                            <td>${board.id}</td>
+                            <td><a href="http://localhost:5500/detail.html?postId=${board.id}">${board.title}</a></td>
+                            <td>${board.createdAt}</td>
+                            <td>${board.updatedAt}</td>
+                            <td>${board.view}
+                            <td><button onclick="clickDeleteBtn(${board.id})">delete</button></td>\
+                        `;
+                    });
+
+                    
+                } else {
+                    noDataMessage.style.display = 'block'; // 데이터가 없으면 "게시글이 없습니다." 메시지 표시
+                }
+            }
+        })
+    }
+
+    
+    function clickDeleteBtn(postId) {
+        if(!confirm('delete')){
+            return
+        }
+
+        deletePost(postId)
+        .then(({status, body})=>{
+            if (status == 200) {
+                alert(body.message);
+            } else {
+                alert(body.message);
+            }
+        })
+    }
+
+    function loginBtn(event){
+        event.preventDefault()
+        const username = document.getElementById('username').value
+        const password = document.getElementById('password').value
+        const data = {
+            username:username,
+            password:password
+        }
+        login(data)
+        .then(({response,body})=>{
+            if(response.ok){
+                sessionStorage.setItem('nickname',body.data.nickname)
+                sessionStorage.setItem('userId',body.data.id)
+                alert(body.message)
+                location.reload(true)
+            }
+            else{
+                alert("error")
+            }
+        })
+        
+    }
+
+    function logoutBtn(event){
+        event.preventDefault()
+        logout()
+        .then(({response,body})=>{
+            if(response.ok){
+                sessionStorage.removeItem('nickname')
+                sessionStorage.removeItem('userId')
+                alert(body.message)
+                location.reload(true)
+            }
+            else{
+                alert(body.message)
+            }
+        })
+    }
+
+    window.search = search
+    window.clickDeleteBtn = clickDeleteBtn
+    window.loginBtn=loginBtn
+    window.logoutBtn=logoutBtn
+    window.onload = init;
+</script>
+
+</body>
+</html>

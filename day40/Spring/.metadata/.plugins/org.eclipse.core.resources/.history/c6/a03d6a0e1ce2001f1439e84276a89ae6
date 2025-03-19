@@ -1,0 +1,27 @@
+package com.example.demo.controller;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.example.demo.common.BaseResBody;
+import com.example.demo.service.UserService;
+import com.example.demo.util.AuthenticationUtil;
+
+import jakarta.validation.Valid;
+
+@RestControllerAdvice
+@RequestMapping("/users")
+public class UserController {
+
+	private UserService userService;
+	private AuthenticationUtil authenticationUtil;
+	public UserController(UserService userService, AuthenticationUtil authenticationUtil) {
+		super();
+		this.userService = userService;
+		this.authenticationUtil = authenticationUtil;
+	}
+	
+//	public ResponseEntity<BaseResBody> Signup(@RequestBody @Valid UserReq)
+}

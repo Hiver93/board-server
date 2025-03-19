@@ -1,0 +1,5 @@
+1737114335810	Rename type 'BaseResponeBody'
+1737114756298	Rename method 'findByTitle'
+1737114759856	Rename method 'findByTitleOrContent'
+1737114762853	Rename method 'findByContent'
+1737202817812	Rename local variable 'postList'

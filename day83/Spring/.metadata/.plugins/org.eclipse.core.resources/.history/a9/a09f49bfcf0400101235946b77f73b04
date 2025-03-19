@@ -1,0 +1,109 @@
+package com.example.demo.facade;
+
+import java.io.IOException;
+import java.util.Set;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.example.demo.domain.Post;
+import com.example.demo.dto.CommentReqDto;
+import com.example.demo.dto.PostReqDto;
+import com.example.demo.dto.PostResDto.Detail;
+import com.example.demo.dto.PostResDto.PostList;
+import com.example.demo.service.AuthService;
+import com.example.demo.service.CommentService;
+import com.example.demo.service.ImageService;
+import com.example.demo.service.PostLikeService;
+import com.example.demo.service.PostService;
+
+@Service
+public class PostFacade {
+
+	private PostService postService;
+	private CommentService commentService;
+	private PostLikeService postLikeService;
+	private ImageService imageService;
+	private AuthService authService;
+	public PostFacade(PostService postService, CommentService commentService, PostLikeService postLikeService,
+			ImageService imageService, AuthService authService) {
+		super();
+		this.postService = postService;
+		this.commentService = commentService;
+		this.postLikeService = postLikeService;
+		this.imageService = imageService;
+		this.authService = authService;
+	}
+	
+	public void writePost(PostReqDto.Create dto, MultipartFile image) throws IOException {
+		Post post;
+		if(authService.isAuthenticated()) {
+			post = this.postService.createPost(dto.getTitle(), dto.getContent(), dto.getPassword());
+		}
+		else {
+			post = this.postService.createPost(dto.getTitle(), dto.getContent(), this.authService.authenticate());
+		}
+		
+		if(image != null) {
+			post.setImage(this.imageService.saveImage(post, image));
+		}
+	}
+	
+	public PostList getPostList(Pageable pageable, String keyword, Set<String> target) {
+		return PostList.from(this.postService.getPage(pageable, keyword, target));
+	}
+	
+	public Detail readPost(Integer postId) {
+		Post saved = this.postService.getPost(postId);
+		this.postService.increaseView(postId);
+		return Detail.from(saved);
+	}
+	
+	@Transactional
+	public void removePost(Integer postId, PostReqDto.Delete dto) {
+		Post saved = this.postService.getPost(postId);
+		if(saved.isAnonymousPost()) {
+			this.postService.removePost(postId, dto.getPassword());
+		}
+		else {
+			this.postService.removePost(postId, this.authService.authenticate());		
+		}		
+	}
+	
+	@Transactional
+	public void modifyPost(Integer postId, PostReqDto.Put dto) {
+		Post saved = this.postService.getPost(postId);
+		if(saved.isAnonymousPost()) {
+			this.postService.modifyPost(postId, dto.getTitle(), dto.getContent(), dto.getContent());
+		}
+		else {
+			this.postService.modifyPost(postId, dto.getTitle(), dto.getContent(), this.authService.authenticate());
+		}		
+	}
+	
+	@Transactional
+	public void addComment(Integer postId, CommentReqDto.Create dto) {
+		Post post = this.postService.getPost(postId);
+		post.addComment(this.commentService.createComment(post, dto.toString(), this.authService.authenticate()));
+	}
+	
+	public void removeComment(Integer commentId) {
+		this.commentService.removeComment(commentId, this.authService.authenticate());
+	}
+	
+	public void modifyComment(Integer commentId, CommentReqDto.Put dto) {
+		this.commentService.modifyComment(commentId, dto.toString(), this.authService.authenticate());
+	}
+	
+	@Transactional
+	public void addPostLike(Integer postId) {
+		Post post = this.postService.getPost(postId);
+		post.addPostLike(this.postLikeService.createPostLike(post, this.authService.authenticate()));
+	}
+	
+	public void removePostLike(Integer postId) {
+		this.postLikeService.removePostLike(postId, this.authService.authenticate());
+	}
+}

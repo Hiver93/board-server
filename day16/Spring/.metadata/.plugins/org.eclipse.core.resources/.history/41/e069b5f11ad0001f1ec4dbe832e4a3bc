@@ -1,0 +1,5 @@
+package com.example.board.error;
+
+public class PostException {
+
+}

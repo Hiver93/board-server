@@ -1,0 +1,19 @@
+package com.example.demo.service;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.repository.UserRepository;
+
+@Service
+public class UserService {
+
+	private UserRepository userRepository;
+	private PasswordEncoder passwordEncoder;
+	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+		super();
+		this.userRepository = userRepository;
+		this.passwordEncoder = passwordEncoder;
+	}
+	
+}

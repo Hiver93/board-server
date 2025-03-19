@@ -1,0 +1,10 @@
+package com.example.demo.common;
+
+public class BaseBody {
+	private final Void v;
+
+	public BaseBody(Void v) {
+		super();
+		this.v = v;
+	}
+}

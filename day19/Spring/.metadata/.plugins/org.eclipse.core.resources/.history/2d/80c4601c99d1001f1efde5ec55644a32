@@ -1,0 +1,12 @@
+package com.example.demo.dto;
+
+public record PostResponseDto(
+		long id,
+		String title,
+		String content,
+		long view,
+		String createdAt,
+		String updatedAt
+		){
+
+}

@@ -1,0 +1,17 @@
+package com.example.board.day1.service;
+
+import com.example.board.day1.dto.Board;
+import com.example.board.day1.repository.BoardRepository;
+
+public class BoardService {
+	
+	private BoardRepository boardRepository;
+	
+	public BoardService(BoardRepository boardRepository) {
+		this.boardRepository = boardRepository;
+	}
+	
+	public void createBoard(Board board) {
+		this.boardRepository.save(board);
+	}
+}

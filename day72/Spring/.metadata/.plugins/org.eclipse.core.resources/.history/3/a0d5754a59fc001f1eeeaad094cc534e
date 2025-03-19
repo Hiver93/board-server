@@ -1,0 +1,23 @@
+package com.example.demo.service;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+@Service
+public class FileService {
+
+	private Map<Integer, byte[]> map = new HashMap<>();
+	private int cnt = 0;
+	
+	public void saveFile(MultipartFile file) {
+		try {
+			map.put(cnt++, file.getBytes());
+		} catch (IOException e) {
+			throw RuntimeException(e);
+		}
+	}
+}

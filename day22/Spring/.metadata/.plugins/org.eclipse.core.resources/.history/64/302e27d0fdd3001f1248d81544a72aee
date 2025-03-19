@@ -1,0 +1,27 @@
+package com.example.demo.error;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatus.*;
+
+public enum ErrorCode {
+	
+	// 404
+	POST_NOT_FOUND(HttpStatus.NOT_FOUND,"post not found"),
+	// 401
+	INCORRECT_PASSWORD(HttpStatus.UNAUTHORIZED,"incorrect password");
+	
+	private final HttpStatus status;
+	private final String messge;
+	
+	private ErrorCode(HttpStatus status, String messge) {
+		this.status = status;
+		this.messge = messge;
+	}
+	public HttpStatus getStatus() {
+		return status;
+	}
+	public String getMessge() {
+		return messge;
+	}
+	
+}

@@ -1,0 +1,21 @@
+package com.example.demo.dto;
+
+import java.util.List;
+
+import com.example.demo.domain.User;
+
+public record UserResDto(
+		Integer id,
+		String nickname,
+		List<PostResDto.PostList.Item> postList
+		) {
+	public static UserResDto from(User user) {
+		return new UserResDto(user.getId(), user.getNickname(), 
+				user.getPostList().stream().map(
+						(p)->{
+							p.getUser().updateNickname(user.getNickname())
+							return PostResDto.PostList.Item.from(p);
+						}
+						).toList());
+	}
+}

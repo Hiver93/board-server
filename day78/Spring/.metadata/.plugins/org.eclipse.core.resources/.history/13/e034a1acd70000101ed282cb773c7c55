@@ -1,0 +1,61 @@
+package com.example.demo.service;
+
+import java.util.List;
+import java.util.Set;
+
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.domain.Post;
+import com.example.demo.domain.User;
+import com.example.demo.repository.PostRepository;
+
+@Service
+public class PostService {
+
+	private PostRepository postRepository;
+
+	public PostService(PostRepository postRepository) {
+		super();
+		this.postRepository = postRepository;
+	}
+	
+	public void createPost(String title, String content, String password) {
+		this.postRepository.save(Post.builder()
+				.title(title)
+				.content(content)
+				.password(password)
+				.build());
+	}
+	
+	public void createPost(String title, String content, User user) {
+		this.postRepository.save(Post.builder()
+				.title(title)
+				.content(content)
+				.user(user)
+				.build());
+	}
+	
+	public List<Post> getPostList(Pageable pageable, String keyword, Set<String> target){
+		boolean title = target.contains("title");
+		boolean content = target.contains("content");
+		boolean nickname = target.contains("nickname");
+		Page<Post> page;
+		if(title && content) {
+			page = this.postRepository.findAllByTitleContainingOrContentContaining(pageable, keyword, keyword);
+		}
+		else if(title) {
+			page = this.postRepository.findAllByTitleContaining(pageable, keyword);
+		}
+		else if(content) {
+			page = this.postRepository.findAllByContentContaining(pageable, keyword);
+		}
+		else if(nickname) {
+			page = this.postRepository.findAllByUser_NicknameContaining(pageable, keyword);
+		}
+		else {
+			page = this.postRepository.findAll(pageable);
+		}
+	}
+}

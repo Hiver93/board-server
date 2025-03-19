@@ -1,0 +1,11 @@
+package com.example.demo.dto;
+
+import java.util.List;
+
+public record UserResDto(
+		Integer id,
+		String nickname,
+		List<PostResDto.PostList.Item> postList
+		) {
+
+}

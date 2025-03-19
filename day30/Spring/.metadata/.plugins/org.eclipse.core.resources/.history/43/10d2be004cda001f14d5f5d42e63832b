@@ -1,0 +1,21 @@
+package com.example.demo.dto;
+
+public class UserResDto {
+
+	public static class Login{
+		private String nickname;
+
+		public Login() {
+			super();
+		}
+
+		public String getNickname() {
+			return nickname;
+		}
+
+		public void setNickname(String nickname) {
+			this.nickname = nickname;
+		}
+		
+	}
+}

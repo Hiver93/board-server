@@ -1,0 +1,48 @@
+package com.example.board.controller;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.board.dto.PostRequestDto;
+import com.example.board.dto.PostResponseDto;
+import com.example.board.service.PostService;
+
+@RestController
+@RequestMapping("/posts")
+@CrossOrigin(origins="*")
+public class PostController {
+
+	private PostService postService;
+	
+	public PostController(PostService postService) {
+		this.postService = postService;
+	}
+	
+	@PostMapping
+	public void postPost(@RequestBody PostRequestDto.PostDto dto) {
+		this.postService.createPost(dto.to());
+	}
+	
+	@GetMapping
+	public List<PostResponseDto> getPostList(Pageable pageable, @RequestParam(name="target") Set<String> targets, @RequestParam(name="keyword") String keyword){
+		return this.postService.getPostList(pageable, targets, keyword).stream()
+				.map(PostResponseDto::from)
+				.collect(Collectors.toList());
+	}
+	
+	@GetMapping("/{postId}")
+	public PostResponseDto getPost(@PathVariable(name="postId") long postId) {
+		return PostResponseDto.from(this.postService.getPost(postId));
+	}
+}

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post 수정</title>
+    <script type="module">
+        import {putPost} from "./api.js"
+        // PUT 요청을 보내는 함수
+        function updatePost() {
+            const postId = new URLSearchParams(window.location.search).get('postId');
+            const postTitle = document.getElementById("postTitle").value;
+            const postContent = document.getElementById("postContent").value;
+            const postPassword = document.getElementById('postPassword').value;
+
+
+            // 서버에 보낼 데이터를 객체 형태로 준비
+            const postData = {
+                id: postId,
+                title: postTitle,
+                content: postContent,
+                password: postPassword
+            };
+
+            // PUT api
+            putPost(postData)
+            .then(({status,body})=>{
+                if(status == 200){
+                    alert('Post가 성공적으로 수정되었습니다.');
+                    window.location.href="http://localhost:5500"
+                }
+                else{
+                    alert(body.message)
+                }
+            })
+        }
+        window.updatePost = updatePost
+    </script>
+</head>
+<body>
+    <h1>Post 수정</h1>
+    <form onsubmit="event.preventDefault(); updatePost();">
+        <label for="postTitle">제목:</label>
+        <input type="text" id="postTitle" required><br><br>
+
+        <label for="postContent">내용:</label>
+        <textarea id="postContent" required></textarea><br><br>
+
+        <label>비밀번호:</label>
+        <input type="text" id="postPassword" required><br><br>
+
+        <button type="submit">Post 수정</button>
+    </form>
+</body>
+</html>

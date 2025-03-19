@@ -1,0 +1,60 @@
+
+package com.example.demo.controller;
+
+import java.util.Set;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.common.BaseResBody;
+import com.example.demo.dto.PostReqDto;
+import com.example.demo.dto.PostResDto;
+import com.example.demo.service.AuthService;
+import com.example.demo.service.PostService;
+
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("/posts")
+public class PostController {
+
+	private PostService postService;
+	private AuthService authService;
+		
+	public PostController(PostService postService, AuthService authService) {
+		super();
+		this.postService = postService;
+		this.authService = authService;
+	}
+
+	public ResponseEntity<BaseResBody> postPost(@RequestBody @Valid PostReqDto.Create dto){
+		this.postService.createPost(dto.to(authService.authenticate()));
+	
+		return BaseResBody.of(HttpStatus.CREATED, "posted");
+	}
+	
+	public ResponseEntity<BaseResBody> getPostList(Pageable pageable, String keyword, Set<String> targets){
+		var result = PostResDto.PostList.from(this.postService.getTotalSize(keyword, targets), this.postService.getPostList(pageable, keyword, targets));
+		return BaseResBody.of(HttpStatus.OK, result, "get list");
+	}
+	
+	public ResponseEntity<BaseResBody> getPost(@PathVariable(name = "postId") Integer postId){
+		var result = PostResDto.Detail.from(this.postService.readPost(postId));
+		return BaseResBody.of(HttpStatus.OK, result, "get post");
+	}
+	
+	public ResponseEntity<BaseResBody> deletePost(@PathVariable(name = "postId") Integer postId){
+		this.postService.removePost(postId, this.authService.authenticate());
+		return BaseResBody.of(HttpStatus.OK, "deleted");
+	}
+	
+	public ResponseEntity<BaseResBody> putPost(@PathVariable(name = "postId") Integer postId, @RequestBody @Valid PostReqDto.Update dto){
+		this.postService.modifyPost(dto.to(this.authService.authenticate(), postId));
+		return BaseResBody.of(HttpStatus.OK, "deleted");
+	}
+}

@@ -1,0 +1,11 @@
+package com.example.board.dto;
+
+public class PostRequestDto {
+
+	static class Post{
+		private String title;
+		private String content;
+		private String password;
+		public Post() {}
+	}
+}

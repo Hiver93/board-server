@@ -1,0 +1,80 @@
+package com.example.demo.service;
+
+import java.util.stream.Stream;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import com.example.demo.domain.User;
+import com.example.demo.error.BoardException;
+import com.example.demo.error.ErrorCode;
+import com.example.demo.util.JwtUtil;
+
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import net.bytebuddy.asm.Advice.AssignReturned.ToThis;
+
+@Service
+public class AuthService {
+
+	private final long ACCESS_EXP = 1000 * 60 * 30;
+	private final long REFRESH_EXP = 1000 * 60 * 60 * 6;
+	private JwtUtil jwtUtil;
+	public AuthService(JwtUtil jwtUtil) {
+		super();
+		this.jwtUtil = jwtUtil;
+	}
+	
+	public void setAutentication(User user) {
+		String access = this.jwtUtil.generateToken(user, ACCESS_EXP);
+		String refresh = this.jwtUtil.generateToken(user, REFRESH_EXP);
+		
+		HttpServletResponse response = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getResponse();
+		
+		Cookie c = new Cookie("refresh", refresh);
+		c.setPath("/");
+		c.setSecure(true);
+		c.setHttpOnly(true);
+		
+		response.addCookie(c);
+		response.setHeader("Authorization", access);
+	}
+	
+	public User authenticate() {
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+		
+		String token = request.getHeader("Authorization");
+		if(token == null || token.equals("null")) {
+			throw new BoardException(ErrorCode.AUTHENTICATION_REQUIRED);
+		}
+		
+		try {
+			return this.jwtUtil.getUser(token);
+		}catch(ExpiredJwtException e) {
+			throw new BoardException(ErrorCode.EXPIRED_JWT);
+		}catch(JwtException e) {
+			throw new BoardException(ErrorCode.INVALID_JWT);
+		}
+	}
+	
+	public void refreshAuthentication() {
+HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+		
+		String token = Stream.of(request.getCookies())
+				.filter(c->c.getName().equals("refresh"))
+				.findAny().orElseThrow(()->{throw new BoardException(ErrorCode.AUTHENTICATION_REQUIRED);})
+				.getValue();
+		
+		try {
+			this.jwtUtil.getUser(token);
+		}catch(ExpiredJwtException e) {
+			throw new BoardException(ErrorCode.EXPIRED_JWT);
+		}catch(JwtException e) {
+			throw new BoardException(ErrorCode.INVALID_JWT);
+		}
+	}
+}

@@ -1,0 +1,21 @@
+package com.example.demo.error;
+
+public enum ErrorCode {
+
+	private final HttpStatus status;
+	private final String message;
+
+	private ErrorCode(HttpStatus status, String message) {
+		this.status = status;
+		this.message = message;
+	}
+
+	public HttpStatus getStatus() {
+		return status;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+}

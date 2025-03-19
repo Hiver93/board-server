@@ -1,0 +1,33 @@
+package com.example.demo.controller;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import com.example.demo.common.BaseResBody;
+import com.example.demo.dto.UserReqDto;
+import com.example.demo.service.AuthService;
+
+import jakarta.validation.Valid;
+
+@Service
+public class CommentService {
+
+	private AuthService authService;
+	private CommentService commentService;
+	public CommentService(AuthService authService, CommentService commentService) {
+		super();
+		this.authService = authService;
+		this.commentService = commentService;
+	}
+	
+	@DeleteMapping("/{userId}")
+	public ResponseEntity<BaseResBody<Void>> deleteComment(@PathVariable(name = "commentId") Integer commentId){
+		this.commentService.deleteComment(commentId);
+		return new BaseResBody<Void>(null, "user updated")
+				.toResponse(HttpStatus.OK);
+	}
+}

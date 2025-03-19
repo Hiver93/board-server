@@ -1,0 +1,16 @@
+package com.example.demo.dto;
+
+public class PostResDto {
+
+	public static record Detail() {
+		
+		private static record CommentItem(
+				Integer id,
+				String username,
+				Integer userId,
+				String nickname
+				) {
+			
+		}
+	}
+}

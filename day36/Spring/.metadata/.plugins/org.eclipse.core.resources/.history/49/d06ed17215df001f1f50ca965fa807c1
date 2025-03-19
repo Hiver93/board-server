@@ -1,0 +1,18 @@
+package com.example.demo;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.example.demo.repository.UserRepository;
+
+@SpringBootTest
+public class Test {
+
+	@Autowired
+	private UserRepository userRepository;
+	
+	@org.junit.jupiter.api.Test
+	public void test() {
+		
+	}
+}

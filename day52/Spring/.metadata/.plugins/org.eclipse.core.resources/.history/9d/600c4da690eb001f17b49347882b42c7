@@ -1,0 +1,23 @@
+package com.example.demo.dto;
+
+import java.util.List;
+
+public class PostResDto {
+
+	public static record PostList(
+			Integer totalSize,
+			List<ListItem> postList
+			) {
+		
+		
+		public static record ListItem(
+				Integer id,
+				String title,
+				Integer view,
+				Integer userId,
+				String nickname
+				) {
+			
+		}
+	}
+}

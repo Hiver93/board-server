@@ -1,0 +1,15 @@
+package com.example.demo.common;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+public class BaseBody {
+	private String message;
+	public BaseBody(String message) {
+		this.message = message;
+	}
+	public ResponseEntity<BaseBody> toResponse(HttpStatus status){
+		return ResponseEntity.status(status)
+				.body(this);
+	}
+}

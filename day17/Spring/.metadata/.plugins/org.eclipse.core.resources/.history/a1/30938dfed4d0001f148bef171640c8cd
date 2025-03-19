@@ -1,0 +1,16 @@
+package com.example.board.error;
+
+public class PostException extends RuntimeException {
+	private String message;
+	public PostException(String message) {
+		this.message = message
+		super(message);
+	}
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	
+}

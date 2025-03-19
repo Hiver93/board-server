@@ -1,0 +1,25 @@
+package com.example.demo.domain;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+
+@Entity
+@EntityListeners(value = AuditingEntityListener.class)
+public class Image {
+
+	private Integer id;
+	private Post post;
+	private User user;
+	public Image(Integer id, Post post, User user) {
+		super();
+		this.id = id;
+		this.post = post;
+		this.user = user;
+	}
+	public Image() {
+		super();
+	}
+	
+}

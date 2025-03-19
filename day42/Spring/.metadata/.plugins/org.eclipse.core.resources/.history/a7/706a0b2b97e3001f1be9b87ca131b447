@@ -1,0 +1,32 @@
+package com.example.demo.domain;
+
+public class User {
+
+	private Integer id;
+	private String username;
+	private String nickname;
+	public User(Integer id, String username, String nickname) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.nickname = nickname;
+	}
+	public User() {
+		super();
+	}
+	public Integer getId() {
+		return id;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public String getNickname() {
+		return nickname;
+	}
+	public static Builder builder() {
+		return new Builder();
+	}
+	public static class Builder{
+		
+	}
+}

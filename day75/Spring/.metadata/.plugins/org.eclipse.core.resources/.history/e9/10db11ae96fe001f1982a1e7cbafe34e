@@ -1,0 +1,57 @@
+package com.example.demo;
+
+import java.util.Set;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.example.demo.domain.Post;
+import com.example.demo.domain.User;
+import com.example.demo.dto.PostReqDto;
+import com.example.demo.dto.PostResDto.Detail;
+import com.example.demo.dto.PostResDto.PostList;
+import com.example.demo.service.AuthService;
+import com.example.demo.service.ImageService;
+import com.example.demo.service.PostService;
+
+@Service
+public class PostFacade {
+
+	private PostService postService;
+	private AuthService authService;
+	private ImageService imageService;
+	public PostFacade(PostService postService, AuthService authService, ImageService imageService) {
+		super();
+		this.postService = postService;
+		this.authService = authService;
+		this.imageService = imageService;
+	}
+	
+	@Transactional
+	public void createPost(PostReqDto.Create dto, MultipartFile image) {
+		User user = this.authService.getAuthentication();
+		Post post;
+		if(user == null) {
+			post = this.postService.createPost(dto.getTitle(), dto.getContent(), dto.getPassword());
+		}
+		else {
+			post = this.authService.authenticate();
+			post = this.postService.createPost(dto.getTitle(), dto.getContent(), user);
+		}
+	}
+	
+	public PostList getPostList(Pageable pageable, String keyword, Set<String> target) {
+		return PostList.from(this.postService.getTotalSize(keyword, target), this.postService.getPostList(pageable, keyword, target));
+	}
+	
+	public Detail readPost(Integer postId) {
+		Detail detail = Detail.from(this.postService.getPost(postId));
+		this.postService.increaseView(postId);
+		return detail;
+	}
+	
+	
+	
+}
