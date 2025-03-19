@@ -111,7 +111,7 @@
 <script type="module">
     import {getTotalSize, getPostList, deletePost, login, logout, reissue} from './api.js'
     const sessionStorage = window.sessionStorage;
-    const pageSize = 3;
+    const pageSize = 5;
     const curPage = new URLSearchParams(window.location.search).get("page") != null ? new Number(new URLSearchParams(window.location.search).get("page")) : 0
     const prevPage = curPage < 1 ? curPage : curPage-1;
     const nextPage = curPage+1;
@@ -155,7 +155,7 @@
         }
 
 
-        getPostList(curPage, 3, 'createdAt', 'desc', keyword, target)
+        getPostList(curPage, pageSize, 'createdAt', 'desc', keyword, target)
         .then(({status, body})=>{
             if(status == 200){
                 const data = body.data.postList
