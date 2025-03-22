@@ -58,10 +58,9 @@ public class Image {
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
-	
 	@PostRemove
 	public void postRemove() throws IOException {
-		ImageUtil.deleteImage(this.fileName);
+		ImageUtil.deleteImage(fileName);
 	}
 	public static Builder builder() {
 		return new Builder();
@@ -79,8 +78,8 @@ public class Image {
 			this.fileName = fileName;
 			return this;
 		}
-		public Builder originalFileName(String originalFilaName) {
-			this.originalFileName = originalFilaName;
+		public Builder originalFileName(String originalFileName) {
+			this.originalFileName = originalFileName;
 			return this;
 		}
 		public Builder post(Post post) {

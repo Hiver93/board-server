@@ -42,11 +42,11 @@ public class PostFacade {
 	@Transactional
 	public void writePost(PostReqDto.Create dto, MultipartFile image) throws IOException {
 		Post post;
-		if(this.authService.isAuthenticated()) {			
+		if(this.authService.isAuthenticated()) {
 			post = this.postService.createPost(dto.getTitle(), dto.getContent(), this.authService.authenticate());
 		}
 		else {
-			if(dto.getPassword().isEmpty()) {
+			if(dto.getPassword().isBlank()) {
 				throw new BoardException(ErrorCode.PASSWORD_REQUIRED);
 			}
 			post = this.postService.createPost(dto.getTitle(), dto.getContent(), dto.getPassword());
@@ -57,8 +57,8 @@ public class PostFacade {
 		}
 	}
 	
-	public PostList getPostList(Pageable pageable, String keyword, Set<String> target) {
-		return PostList.from(this.postService.getPage(pageable, keyword, target));
+	public PostList getPostList(Pageable pageable, String keword, Set<String> target) {
+		return PostList.from(this.postService.getPage(pageable, keword, target));
 	}
 	
 	public Detail readPost(Integer postId) {
@@ -89,7 +89,7 @@ public class PostFacade {
 		}
 		
 		if(image != null) {
-			post.setImage(this.imageService.createImage(post, image));			
+			post.setImage(this.imageService.createImage(post, image));
 		}
 	}
 	
@@ -99,12 +99,12 @@ public class PostFacade {
 		post.addComment(this.commentService.createComment(post, dto.getContent(), this.authService.authenticate()));
 	}
 	
-	public void modifyComment(Integer commentId, CommentReqDto.Put dto) {
-		this.commentService.modifyComment(commentId, dto.getContent(), this.authService.authenticate());
-	}
-	
 	public void removeComment(Integer commentId) {
 		this.commentService.removeComment(commentId, this.authService.authenticate());
+	}
+	
+	public void modifyComment(Integer commentId, CommentReqDto.Put dto) {
+		this.commentService.modifyComment(commentId, dto.getContent(), this.authService.authenticate());
 	}
 	
 	@Transactional
@@ -113,7 +113,7 @@ public class PostFacade {
 		post.addPostLike(this.postLikeService.createPostLike(post, this.authService.authenticate()));
 	}
 	
-	public void removePostList(Integer postId) {
+	public void removePostLike(Integer postId) {
 		this.postLikeService.removePostLike(postId, this.authService.authenticate());
 	}
 }
