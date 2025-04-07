@@ -29,8 +29,9 @@ public class PostResDto {
 			User user = post.getUser();
 			if(post.isAnonymousPost() || !user.isActivated()) {
 				user = User.builder().id(null).nickname("anonymous").build();
-			}
-			String imageName = post.getImageList().isEmpty() ? null : post.getImageList().get(0).getFileName();
+			}			
+			String imageName = post.getImage().size() == 0 ? null : post.getImage().get(0).getFileName();
+			System.out.println(imageName);
 			return new Detail(post.getId(), post.getTitle(), post.getContent(), post.getView(), post.getComments(), post.getPostLikes(),
 					imageName,
 					user.getId(), user.getNickname(),
@@ -56,6 +57,7 @@ public class PostResDto {
 			}
 		}
 	}
+	
 	
 	public static record PostList(
 			Long totalSize,

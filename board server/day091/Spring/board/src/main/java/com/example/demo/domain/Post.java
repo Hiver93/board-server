@@ -1,7 +1,6 @@
 package com.example.demo.domain;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.Formula;
@@ -23,10 +22,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Entity
 @EntityListeners(value = AuditingEntityListener.class)
 @Getter
-@NoArgsConstructor
 public class Post {
 
 	@Id
@@ -38,10 +37,10 @@ public class Post {
 	private String content;
 	@Column
 	private String password;
-	@ManyToOne(fetch = FetchType.EAGER, optional = true)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private User user;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "post", cascade = {CascadeType.REMOVE, CascadeType.MERGE}, orphanRemoval = true)
-	private List<Image> imageList;
+	private List<Image> image;
 	@Column
 	private Integer view = 0;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "post", cascade = {CascadeType.REMOVE, CascadeType.MERGE}, orphanRemoval = true)
@@ -81,13 +80,12 @@ public class Post {
 		this.postLikeList.add(postLike);
 	}
 	public void setImage(Image image) {
-		this.imageList = new ArrayList<Image>();
-		imageList.add(image);
-	}
-	public boolean isAnonymousPost() {
-		return this.user == null;
+		this.image.set(0, image);
 	}
 	public boolean verifyPassword(String password) {
 		return this.password.equals(password);
+	}
+	public boolean isAnonymousPost() {
+		return this.user == null;
 	}
 }

@@ -21,10 +21,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Entity
 @EntityListeners(value = AuditingEntityListener.class)
 @Getter
-@NoArgsConstructor
 public class Image {
 
 	@Id
@@ -34,7 +34,7 @@ public class Image {
 	private String fileName;
 	@Column
 	private String originalFileName;
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Post post;
 	@CreatedDate
 	private LocalDateTime createdAt;
@@ -49,6 +49,6 @@ public class Image {
 	
 	@PostRemove
 	public void postRemove() throws IOException {
-		ImageUtil.deleteImage(fileName);
+		ImageUtil.deleteImage(this.fileName);
 	}
 }

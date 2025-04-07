@@ -1,12 +1,10 @@
 package com.example.demo.domain;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import com.example.demo.util.ImageUtil;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,39 +14,38 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PostRemove;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Entity
 @EntityListeners(value = AuditingEntityListener.class)
 @Getter
-@NoArgsConstructor
-public class Image {
+public class Comment {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@Column
-	private String fileName;
-	@Column
-	private String originalFileName;
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	private String content;
+	@ManyToOne(fetch = FetchType.EAGER)
+	private User user;
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Post post;
 	@CreatedDate
 	private LocalDateTime createdAt;
+	@LastModifiedDate
+	private LocalDateTime updatedAt;
 	@Builder
-	public Image(Integer id, String fileName, String originalFileName, Post post) {
+	public Comment(Integer id, String content, User user, Post post) {
 		super();
 		this.id = id;
-		this.fileName = fileName;
-		this.originalFileName = originalFileName;
+		this.content = content;
+		this.user = user;
 		this.post = post;
 	}
-	
-	@PostRemove
-	public void postRemove() throws IOException {
-		ImageUtil.deleteImage(fileName);
+	public void updateContent(String content) {
+		this.content = content;
 	}
 }

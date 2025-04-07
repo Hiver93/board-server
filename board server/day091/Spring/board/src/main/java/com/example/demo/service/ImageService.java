@@ -20,17 +20,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ImageService {
 
-	private final ImageRepository imageRepository;
 	private final Set<String> ALLOWED_CONTENT = Set.of("image/jpeg", "image/png");
+	private final ImageRepository imageRepository;
 	
-	public Image createImage(Post post, MultipartFile file) throws IOException {
+	public Image saveImage(Post post, MultipartFile file) throws IOException {
 		if(!ALLOWED_CONTENT.contains(file.getContentType())) {
 			throw new BoardException(ErrorCode.INVALID_IMAGE_TYPE);
 		}
-		
 		String originalFileName = file.getOriginalFilename();
-		String fileName = UUID.randomUUID() + originalFileName;
-		
+		String fileName = UUID.randomUUID().toString() + originalFileName;
 		Image saved = this.imageRepository.save(Image.builder()
 				.fileName(fileName)
 				.originalFileName(originalFileName)
