@@ -100,4 +100,7 @@ public class Post {
 	public boolean verifyPassword(String password) {
 		return this.password.equals(password);
 	}
+	public void increaseView() {
+		this.view++;
+	}
 }
