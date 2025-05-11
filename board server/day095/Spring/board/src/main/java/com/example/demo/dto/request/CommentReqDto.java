@@ -1,0 +1,29 @@
+package com.example.demo.dto.request;
+
+import org.springframework.validation.annotation.Validated;
+
+import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+public class CommentReqDto {
+
+	@Validated
+	@NoArgsConstructor
+	@Getter
+	@Setter
+	public static class Create{
+		@NotBlank(message = "content is required")
+		private String content;
+	}
+	
+	@Validated
+	@NoArgsConstructor
+	@Getter
+	@Setter
+	public static class Put{
+		@NotBlank(message = "content is required")
+		private String content;
+	}
+}
