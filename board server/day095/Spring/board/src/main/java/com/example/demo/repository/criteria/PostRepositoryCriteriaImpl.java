@@ -53,7 +53,9 @@ public class PostRepositoryCriteriaImpl implements PostRepositoryCriteria{
 				return cb.desc(root.get(order.getProperty()));
 			}
 		}).toList();
-		
+		if(!orderList.isEmpty()) {
+			cq.orderBy(orderList);
+		}
 		List<Post> postList = entityManager
 				.createQuery(cq)
 				.setFirstResult((int)pageable.getOffset())
@@ -66,7 +68,7 @@ public class PostRepositoryCriteriaImpl implements PostRepositoryCriteria{
 		
 		CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
 		Root<Post>countRoot = countQuery.from(Post.class);
-		
+		countQuery.select(cb.count(countRoot));
 		predicates = target.stream().map(str -> {
 			if("nickname".equals(str)) {
 				return cb.like(countRoot.get("user").get("nickname"), "%" + keyword + "%");

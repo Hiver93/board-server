@@ -50,9 +50,9 @@ public class Post {
 	private List<PostLike> postLikeList = new ArrayList<>();
 	@Column
 	private Integer view = 0;
-	@Formula("(SELECT COUNT(*) FROM comment c WHERE c.post_Id = id")
+	@Formula("(SELECT COUNT(*) FROM comment c WHERE c.post_Id = id)")
 	private Integer comments;
-	@Formula("(SELECT COUNT(*) FROM post_like l WHERE l.post_Id = id")
+	@Formula("(SELECT COUNT(*) FROM post_like l WHERE l.post_Id = id)")
 	private Integer postLikes;
 	@CreatedDate
 	private LocalDateTime createdAt;
