@@ -1,3 +1,99 @@
-# board-server
-board server
+# board server
+
+- 목표
+    - 반복하여 서버를 제작하여 기본 사항들을 숙달한다.
+    - 매번 새로운 기능을 추가하거나 리팩토링을 진행하여 서버의 완성도를 높인다.
+    - 다른 방식으로 기능을 구현하거나 새로운 라이브러리를 사용해본다.
+- 기능 및 세부 구현
+    - Post
+        - create
+            - 제목, 내용을 포함하여 게시물을 작성
+            - 로그인 / 비로그인 작성가능
+                - facade 계층에서 인증 정보 확인 후 service 계층의 각 메서드를 호출
+                - 비로그인 시 게시글 비밀번호가 필요하도록 함
+            - 이미지 등록
+                - RequestPart의 require를 false로 지정하여 이미지 등록을 선택적으로 등록 가능하게 한다.
+                - SQL DB에는 filename과 original filename을 저장
+                - 서버의 디렉토리에 실제 파일을 저장
+                - Transaction을 적용하여 실제파일과 SQL DB간의 원자성을 지킴
+            - 부적절한 단어 필터링
+                - 게시글 작성 시 Redis내에 등록된 금칙어를 확인하여 단어 필터링
+                - 단어 필터링 시 Trie 자료구조를 적용하여 빠르게 필터링이 가능하도록 함
+                    - 단순 매칭 대비 TPS 3배 가량 증가
+                        - 테스트 환경
+                            - 로컬환경 WSL ubuntu  환경 JMeter로 측정
+                            - 3000개 금칙어
+                            - 글자수 50자
+                            - thread 1000 / loop 10
+        - read
+            - post list
+                - 게시글의 제목, 작성시간, 작성자 정보, 조회수, 댓글수, 좋아요수 들을 리스트로 반환
+                    - 작성자 정보 (nickname)는 fetch join을 사용하여 N+1을 해결
+                    - 댓글수(comments), 좋아요(likes)는 @fomula를 사용하여 쿼리가 여러번 요청되지 않도록 해결
+                - Pageable을 이용하여 리스트 paging
+                    - @Query에 countQuery 적용한 후 totalElements를 같이 보내어 front단에서 페이지의 끝을 알 수 있게 함
+            - detail
+                - 게시글의 상세를 확인
+                - 조회수(view)
+                    - client가 조회할 post의 detail을 읽어오는 메서드와 view를 증가시키는 메서드 분리
+                    - view 증가 메서드는 lock을 사용하여 동시성 제어
+                    - 조회한 데이터는 바로 client에 전송, view증가는 비동기로 진행하여 시간 당 처리량 증가
+                - 이미지 확인
+                    - WebMvcConfigurer의 addResourceHandler를 오버라이딩하여 imageName에 해당하는 디렉토리에서 이미지를 반환함
+                    - CacheControl을 적용하여 한번 이미지를 읽으면 브라우저 캐시에 저장되어 이후의 서버에 대한 요청 감소
+            - 별도의 response DTO를 사용하여 결합도를 낮추고 민감정보가 전송되지 않도록 한다.
+        - update
+            - put요청으로 title과 content를 받아 데이터 수정
+            - transaction을 적용하여 dirty checking으로 데이터를 바로 수정
+            - facade 계층에서 해당 post가 익명글인지 확인 후 service계층의 각 메서드 호출
+        - delete
+            - cascade를 적용하여 post와 연관된 데이터들을 함께 삭제
+                - 이미지 삭제 시
+                    - Transaction을 적용하여 실제 위치의 이미지 삭제 실패시 DB의 관련 데이터들도 삭제되지 않도록 원자성을 지킴
+    - Comment
+        - create
+            - 로그인된 사용자만 댓글 작성이 가능하도록 함
+            - Trie 자료구조를 활용하여 부적절한 단어를 필터링
+        - remove
+            - 작성자만이 삭제할 수 있도록 함
+        - update
+            - 작성자만이 수정할 수 있도록 함
+            - Trie 자료구조를 활용하여 부적절한 단어를 필터링
+        - delete
+            - 작성자만이 삭제할 수 있도록 함
+    - Like
+        - 게시물에 좋아요를 등록할 수 있는 기능
+        - post
+            - 이전에 좋아요를 누른 이력이 있는지 확인 후 진행
+        - delete
+            - 좋아요를 누른 상태인지 확인 후 진행
+    - User
+        - signup
+            - 중복된 아이디 확인 후 회원가입 진행
+        - login
+            - sesssion을 활용한 로그인 정보 관리
+        - logout
+            - session 내의 정보 삭제로 로그아웃 구현
+        - delete
+            - 로그인 정보, 비밀번호 확인하여 회원 탈퇴 진행
+            - Soft Delete로 회원 정보는 곧 바로 삭제 하지 않고 일정 시간 동안 데이터 보관
+            - Scheduling을 활용하여 일정 시간이 지난 회원 데이터 삭제
+
+- 사용 중인 기술 환경
+    - Java 17
+    - Spring boot 3.4.1
+    - Spring data jpa
+    - Spring security crypto
+    - Spring validation
+    - Lombok
+    - Redis3.0.504
+    - MySQL 9.1
+    - WSL 2.3.26
+    - Ubuntu 24.04.1 LTS
+    - Docker 27.5
+    - HTML, CSS, JavaScript
+- 이전 기술 환경
+    - MyBatis (day23~26, 45)
+    - JWT(day38~57)
+      
 youtube: https://www.youtube.com/@__A-te5wo
